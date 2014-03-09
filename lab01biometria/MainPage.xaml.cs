@@ -16,6 +16,8 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Media.Imaging;
 using Windows.UI.Xaml.Navigation;
+using System.Runtime.InteropServices.WindowsRuntime;
+
 
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -29,6 +31,7 @@ namespace lab01biometria
         public MainPage()
         {
             this.InitializeComponent();
+
         }
 
         /// <summary>
@@ -39,7 +42,10 @@ namespace lab01biometria
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
         }
-
+        IRandomAccessStream fileStream; // Wczytanie pliku do strumienia
+        Guid decoderId;
+        byte[] sourcePixels;
+        BitmapDecoder decoder;
         private async void wczytajimage(object sender, RoutedEventArgs e)
         {
             FileOpenPicker FOP = new FileOpenPicker(); // Klasa okna wybierania pliku
@@ -51,36 +57,104 @@ namespace lab01biometria
             FOP.FileTypeFilter.Add(".png");
             FOP.FileTypeFilter.Add(".gif");
             StorageFile file = await FOP.PickSingleFileAsync();
-            IRandomAccessStream fileStream = null; // Wczytanie pliku do strumienia
-            Guid decoderId;
             // Uruchomienie wybierania pliku pojedynczego
             if (file != null)
             {
-             // Dekoder będzie potrzebny później przy pracy na obrazie
-            BitmapImage bitmapImage = new BitmapImage(); // Stworzenie obiektu obrazu do wyświetlenia
-            bitmapImage.SetSource(fileStream); // Przepisanie obrazu ze strumienia do obiektu obrazu przez wartosc
-            this.obrazek.Source = bitmapImage; // Przypisanie obiektu obrazu do elementu interfejsu typu "Image" o nazwie "Oryginał"
-            // Poniżej znajduje się zapamiętanie dekodera
-            
-            switch (file.FileType.ToLower())
+                    fileStream = await file.OpenAsync(FileAccessMode.Read);
+                     // Dekoder będzie potrzebny później przy pracy na obrazie
+                    BitmapImage bitmapImage = new BitmapImage(); // Stworzenie obiektu obrazu do wyświetlenia
+                    bitmapImage.SetSource(fileStream); // Przepisanie obrazu ze strumienia do obiektu obrazu przez wartosc
+                    this.obrazek.Source = bitmapImage; // Przypisanie obiektu obrazu do elementu interfejsu typu "Image" o nazwie "Oryginał"
+                    // Poniżej znajduje się zapamiętanie dekodera
+                    switch (file.FileType.ToLower())
+                    {
+                    case ".jpg":
+                    case ".jpeg":
+                    decoderId = BitmapDecoder.JpegDecoderId;
+                    break;
+                    case ".bmp":
+                    decoderId = BitmapDecoder.BmpDecoderId;
+                    break;
+                    case ".png":
+                    decoderId = BitmapDecoder.PngDecoderId;
+                    break;
+                    case ".gif":
+                    decoderId = BitmapDecoder.GifDecoderId;
+                    break;
+                    default:
+                    return;}
+            }
+            decoder = await BitmapDecoder.CreateAsync(decoderId, fileStream); // Dekodowanie strumienia za pomocą dekodera
+            // Dekodowanie strumienia do klasy z informacjami o jego parametrach
+            PixelDataProvider pixelData = await decoder.GetPixelDataAsync(
+            BitmapPixelFormat.Bgra8, // Warto tu zwrócić uwagę jak przechowywane są kolory!!!
+            BitmapAlphaMode.Straight,
+            new BitmapTransform(),
+            ExifOrientationMode.IgnoreExifOrientation,
+            ColorManagementMode.DoNotColorManage
+            );
+
+            this.sourcePixels = pixelData.DetachPixelData();
+        }
+
+        private async void bitmpe(byte[] tablica)
+        {
+            WriteableBitmap writeableBitmap = new WriteableBitmap((int)decoder.PixelWidth, (int)decoder.PixelHeight);
+            using (Stream stream = writeableBitmap.PixelBuffer.AsStream())
             {
-            case ".jpg":
-            case ".jpeg":
-            decoderId = BitmapDecoder.JpegDecoderId;
-            break;
-            case ".bmp":
-            decoderId = BitmapDecoder.BmpDecoderId;
-            break;
-            case ".png":
-            decoderId = BitmapDecoder.PngDecoderId;
-            break;
-            case ".gif":
-            decoderId = BitmapDecoder.GifDecoderId;
-            break;
-            default:
-            return;
+                await stream.WriteAsync(tablica, 0, tablica.Length);
             }
-            }
-                    }
-                }
-}
+            this.im_effect.Source = writeableBitmap;
+        }
+
+        private void _try_Click(object sender, RoutedEventArgs e)
+        {
+            
+            image_RGB a = new image_RGB(sourcePixels);
+            if (normalize.IsSelected)
+                info.Text = "1";
+            else if (grey.IsSelected)
+                info.Text = "3";
+            else if (natural_grey.IsSelected)
+                info.Text = "4";
+            else if (sepia.IsSelected)
+                info.Text = "5";
+            else if (roberts.IsSelected)
+                info.Text = "6";
+            else if (sobel.IsSelected)
+                info.Text = "7";
+            else if (negative.IsSelected)
+                a.negative();
+            else
+                info.Text = "nothing selected";
+            
+            bitmpe(a.utab);
+            this.obrazek.Source = this.im_effect.Source;
+            
+        }
+
+           
+
+        private void OK_Click(object sender, RoutedEventArgs e)
+        {
+            _try_Click(sender, e);
+
+            //this.obrazek.Source = this.im_effect.Source;
+
+
+
+
+            
+                
+        }
+        }
+    
+    }
+        
+
+
+            
+    
+
+
+
