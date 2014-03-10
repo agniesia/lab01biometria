@@ -44,8 +44,11 @@ namespace lab01biometria
         }
         IRandomAccessStream fileStream; // Wczytanie pliku do strumienia
         Guid decoderId;
+        
         byte[] sourcePixels;
         BitmapDecoder decoder;
+        int w = 0;
+        int h = 0;
         private async void wczytajimage(object sender, RoutedEventArgs e)
         {
             FileOpenPicker FOP = new FileOpenPicker(); // Klasa okna wybierania pliku
@@ -58,6 +61,7 @@ namespace lab01biometria
             FOP.FileTypeFilter.Add(".gif");
             StorageFile file = await FOP.PickSingleFileAsync();
             // Uruchomienie wybierania pliku pojedynczego
+            
             if (file != null)
             {
                     fileStream = await file.OpenAsync(FileAccessMode.Read);
@@ -66,6 +70,9 @@ namespace lab01biometria
                     bitmapImage.SetSource(fileStream); // Przepisanie obrazu ze strumienia do obiektu obrazu przez wartosc
                     this.obrazek.Source = bitmapImage; // Przypisanie obiektu obrazu do elementu interfejsu typu "Image" o nazwie "Oryginał"
                     // Poniżej znajduje się zapamiętanie dekodera
+                    w=bitmapImage.PixelWidth;
+                    h=bitmapImage.PixelHeight;
+                    
                     switch (file.FileType.ToLower())
                     {
                     case ".jpg":
@@ -87,14 +94,17 @@ namespace lab01biometria
             decoder = await BitmapDecoder.CreateAsync(decoderId, fileStream); // Dekodowanie strumienia za pomocą dekodera
             // Dekodowanie strumienia do klasy z informacjami o jego parametrach
             PixelDataProvider pixelData = await decoder.GetPixelDataAsync(
-            BitmapPixelFormat.Bgra8, // Warto tu zwrócić uwagę jak przechowywane są kolory!!!
+            BitmapPixelFormat.Bgra8,// Warto tu zwrócić uwagę jak przechowywane są kolory!!!
             BitmapAlphaMode.Straight,
             new BitmapTransform(),
             ExifOrientationMode.IgnoreExifOrientation,
             ColorManagementMode.DoNotColorManage
             );
-
-            this.sourcePixels = pixelData.DetachPixelData();
+            
+            sourcePixels=pixelData.DetachPixelData();
+            
+            
+            
         }
 
         private async void bitmpe(byte[] tablica)
@@ -110,7 +120,12 @@ namespace lab01biometria
         private void _try_Click(object sender, RoutedEventArgs e)
         {
             
-            image_RGB a = new image_RGB(sourcePixels);
+            
+            image_RGB a = new image_RGB(sourcePixels,w,h);
+            image_Gray temp = new image_Gray();
+            
+            temp=a.sepia();
+            bitmpe(temp.utab);
             if (normalize.IsSelected)
                 info.Text = "1";
             else if (grey.IsSelected)
@@ -124,12 +139,15 @@ namespace lab01biometria
             else if (sobel.IsSelected)
                 info.Text = "7";
             else if (negative.IsSelected)
-                a.negative();
+                info.Text = w.ToString();
+                 
+                 
             else
                 info.Text = "nothing selected";
+            //bitmpe(temp.utab);
             
-            bitmpe(a.utab);
-            this.obrazek.Source = this.im_effect.Source;
+            //sourcePixels =(byte[]) a.utab.Clone();
+            //this.obrazek.Source = this.im_effect.Source;
             
         }
 
