@@ -123,9 +123,12 @@ namespace lab01biometria
             
             image_RGB a = new image_RGB(sourcePixels,w,h);
             image_Gray temp = new image_Gray();
-            
-            temp=a.sepia();
+
+            a.sepia(40);
+            temp = a.grey_naturalimage();
             bitmpe(temp.utab);
+            //bitmpe(a.imagearray3Dto1D());
+                
             if (normalize.IsSelected)
                 info.Text = "1";
             else if (grey.IsSelected)
