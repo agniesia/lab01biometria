@@ -130,7 +130,7 @@ namespace lab01biometria
             await ThreadPool.RunAsync(
 new WorkItemHandler(
 (IAsyncAction action) =>
-{   a.Sobel();
+{   a.sobel();
     
 }
 )
