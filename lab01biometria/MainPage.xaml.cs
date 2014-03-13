@@ -119,25 +119,12 @@ namespace lab01biometria
             this.im_effect.Source = writeableBitmap;
         }
 
-        private async void _try_Click(object sender, RoutedEventArgs e)
+        private void _try_Click(object sender, RoutedEventArgs e)
         {
             
             
             image_RGB a = new image_RGB(sourcePixels,w,h);
             image_Gray temp = new image_Gray();
-
-
-            await ThreadPool.RunAsync(
-new WorkItemHandler(
-(IAsyncAction action) =>
-{   a.sobel();
-    
-}
-)
-); 
-            //temp = a.grey_naturalimage();
-            //bitmpe(temp.utab);
-            bitmpe(a.imagearray3Dto1D());
              
             if (normalize.IsSelected)
                 info.Text = "1";
@@ -147,10 +134,7 @@ new WorkItemHandler(
                 info.Text = "4";
             else if (sepia.IsSelected)
                 info.Text = "5";
-            else if (roberts.IsSelected)
-                info.Text = "6";
-            else if (sobel.IsSelected)
-                info.Text = "7";
+           
             else if (negative.IsSelected)
                 info.Text = w.ToString();
                  
