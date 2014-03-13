@@ -19,6 +19,7 @@ using Windows.UI.Xaml.Navigation;
 using System.Runtime.InteropServices.WindowsRuntime;
 
 
+
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234238
 
 namespace lab01biometria
@@ -124,11 +125,11 @@ namespace lab01biometria
             image_RGB a = new image_RGB(sourcePixels,w,h);
             image_Gray temp = new image_Gray();
 
-            a.roberts();
+            a.Roberts();
             //temp = a.grey_naturalimage();
             //bitmpe(temp.utab);
             bitmpe(a.imagearray3Dto1D());
-                
+             
             if (normalize.IsSelected)
                 info.Text = "1";
             else if (grey.IsSelected)
