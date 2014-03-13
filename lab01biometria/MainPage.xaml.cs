@@ -17,6 +17,7 @@ using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Media.Imaging;
 using Windows.UI.Xaml.Navigation;
 using System.Runtime.InteropServices.WindowsRuntime;
+using Windows.System.Threading;
 
 
 
@@ -118,14 +119,22 @@ namespace lab01biometria
             this.im_effect.Source = writeableBitmap;
         }
 
-        private void _try_Click(object sender, RoutedEventArgs e)
+        private async void _try_Click(object sender, RoutedEventArgs e)
         {
             
             
             image_RGB a = new image_RGB(sourcePixels,w,h);
             image_Gray temp = new image_Gray();
 
-            a.Roberts();
+
+            await ThreadPool.RunAsync(
+new WorkItemHandler(
+(IAsyncAction action) =>
+{   a.Sobel();
+    
+}
+)
+); 
             //temp = a.grey_naturalimage();
             //bitmpe(temp.utab);
             bitmpe(a.imagearray3Dto1D());
