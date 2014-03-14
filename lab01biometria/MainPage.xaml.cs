@@ -49,8 +49,11 @@ namespace lab01biometria
         
         byte[] sourcePixels;
         BitmapDecoder decoder;
+        byte Event = 0;
         int w = 0;
         int h = 0;
+        image_RGB kolor;
+        image_Gray szary;
         private async void wczytajimage(object sender, RoutedEventArgs e)
         {
             FileOpenPicker FOP = new FileOpenPicker(); // Klasa okna wybierania pliku
@@ -121,27 +124,60 @@ namespace lab01biometria
 
         private void _try_Click(object sender, RoutedEventArgs e)
         {
+
+            kolor = new image_RGB(sourcePixels, w, h);
+            szary = new image_Gray(sourcePixels);
             
-            
-            image_RGB a = new image_RGB(sourcePixels,w,h);
-            image_Gray temp = new image_Gray();
-             
-            if (normalize.IsSelected)
-                info.Text = "1";
-            else if (grey.IsSelected)
-                info.Text = "3";
-            else if (natural_grey.IsSelected)
-                info.Text = "4";
-            else if (sepia.IsSelected)
-                info.Text = "5";
-           
-            else if (negative.IsSelected)
-                info.Text = w.ToString();
-                 
-                 
-            else
-                info.Text = "nothing selected";
-            //bitmpe(temp.utab);
+            switch (Event)
+            {
+                case 1:
+                    info.Text = "Change corolfull image to sepia colors. Sepia factor belongs to the interval from 20 to 40";
+                    kolor.sepia(20);
+                    bitmpe(kolor.show());
+                    break;
+                    //moze byc warunek
+
+                case 2:
+
+                    info.Text = "Change corolfull image to grayscale with natural luminaces algorithm";
+                    szary = kolor.grey_naturalimage();
+                    bitmpe(szary.show());
+                    ///mozebyc warunek
+                    break;
+                case 3:
+                    info.Text = "Histogram Eqaliztaion increases the global contrast of many images. Histogram of the color is distributed for all intensities";
+                    //normalizacja na szarym!
+                    kolor.normalize();
+                    bitmpe(kolor.show());
+                    szary.normalize();
+                    ///warunek
+                    //bitmpe(szary.show());
+
+                    break;
+                case 4:
+                    info.Text = "Change corofull image to grayscale with avrage algorithm";
+                    //moze byc warunek
+                    szary = kolor.greyimage();
+                    bitmpe(szary.show());
+
+                    break;
+
+                case 5:
+                    info.Text = "Change image to negative image";
+                    kolor.negative();
+                    bitmpe(kolor.show());
+                    //warunek
+                    szary.negative();
+                    //bitmpe(szary.show());
+
+                    break;
+
+
+                default:
+                    info.Text = "Nothing was selected";
+                    bitmpe(kolor.show());
+                    break;
+            }
             
             //sourcePixels =(byte[]) a.utab.Clone();
             //this.obrazek.Source = this.im_effect.Source;
@@ -154,7 +190,27 @@ namespace lab01biometria
         {
             _try_Click(sender, e);
 
-            //this.obrazek.Source = this.im_effect.Source;
+            if (kolor != null)
+            {
+                this.obrazek.Source = this.im_effect.Source;
+                double c = 0;
+                for (int i = 0; i < kolor.utab.Length; i = i + 4)
+                {
+                    c += (Math.Abs(kolor.utab[i] - kolor.utab[i + 1]) + Math.Abs(kolor.utab[i] - kolor.utab[i + 2]) + Math.Abs(kolor.utab[i + 1] - kolor.utab[i + 2]));
+                }
+                if (c == 0.0)
+                {
+
+                    sourcePixels = szary.utab;
+                    return;
+                }
+
+                sourcePixels = kolor.utab;
+            }
+            else
+                info.Text = "object is null exeption needed";
+
+
 
 
 
@@ -162,6 +218,33 @@ namespace lab01biometria
             
                 
         }
+
+        private void sepia_GotFocus(object sender, RoutedEventArgs e)
+        {
+            Event = 1;
+        }
+
+        private void natural_grey_GotFocus(object sender, RoutedEventArgs e)
+        {
+            Event = 2;
+        }
+
+        private void normalize_GotFocus(object sender, RoutedEventArgs e)
+        {
+            Event = 3;
+        }
+
+        private void grey_GotFocus(object sender, RoutedEventArgs e)
+        {
+            Event = 4;
+        }
+
+        private void negative_GotFocus(object sender, RoutedEventArgs e)
+        {
+            Event = 5;
+        }
+
+        
         }
     
     }
