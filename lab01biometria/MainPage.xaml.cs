@@ -184,7 +184,7 @@ namespace lab01biometria
                         bitmpe(kolor.show(), kolor);
                         szary = null;
                     }
-                    if (szary != null)
+                     else if (szary != null)
                     {
                         szary.normalize();
                         ///warunek
@@ -226,7 +226,7 @@ namespace lab01biometria
                         bitmpe(kolor.show(), kolor);
                     }
                     //warunek
-                    if (szary != null)
+                    else if (szary != null)
                     {
                         szary.negative();
                         bitmpe(szary.show(), szary);
@@ -239,11 +239,11 @@ namespace lab01biometria
                     info.Text = "Roberts cross is  differential operator, its  approximate the gradient of an image for edage detection. Sensitivity to noise";
                     if (kolor != null)
                     {
-                        kolor.Roberts();
-                        bitmpe(kolor.show(), kolor);
+                        image_RGB temp = kolor.Roberts();
+                        bitmpe(temp.show(), temp);
                     }
                     //warunek
-                    if (szary != null)
+                    else if  (szary != null)
                     {
                         //szary.Roberts();
                         bitmpe(szary.show(), szary);
@@ -261,7 +261,7 @@ namespace lab01biometria
                         bitmpe(kolor.show(), kolor);
                     }
                     //warunek
-                    if (szary != null)
+                    else if (szary != null)
                     {
                         //szary.sobel();
                         bitmpe(szary.show(), szary);
@@ -341,7 +341,7 @@ namespace lab01biometria
                         bitmpe(kolor.show(), kolor);
                         szary = null;
                     }
-                    if (szary != null)
+                     else if (szary != null)
                     {
                         szary.normalize();
                         ///warunek
@@ -383,7 +383,7 @@ namespace lab01biometria
                         bitmpe(kolor.show(), kolor);
                     }
                     //warunek
-                    if (szary != null)
+                     else if (szary != null)
                     {
                         szary.negative();
                         bitmpe(szary.show(), szary);
@@ -396,11 +396,12 @@ namespace lab01biometria
                     info.Text = "Roberts cross is  differential operator, its  approximate the gradient of an image for edage detection. Sensitivity to noise";
                     if (kolor != null)
                     {
-                        kolor.Roberts();
+                        image_RGB temp = kolor.Roberts();
+                        kolor=temp;
                         bitmpe(kolor.show(), kolor);
                     }
                     //warunek
-                    if (szary != null)
+                     else if (szary != null)
                     {
                         //szary.Roberts();
                         bitmpe(szary.show(), szary);
@@ -418,7 +419,7 @@ namespace lab01biometria
                         bitmpe(kolor.show(), kolor);
                     }
                     //warunek
-                    if (szary != null)
+                     else if (szary != null)
                     {
                         //szary.sobel();
                         bitmpe(szary.show(), szary);
@@ -443,7 +444,7 @@ namespace lab01biometria
                 this.obrazek.Source = this.im_effect.Source;
                
 
-                sourcePixels = kolor.utab;
+                sourcePixels = (byte[])kolor.utab.Clone();
                 
                 info.Text = "Image changed!";
                 
@@ -461,11 +462,11 @@ namespace lab01biometria
                 if (c == 0.0)
                 {
 
-                    sourcePixels = szary.utab;
+                    sourcePixels =(byte[]) szary.utab.Clone();
                     return;
                 }
 
-                sourcePixels = szary.utab;
+                sourcePixels =(byte[]) szary.utab.Clone();
                 
                 info.Text = "Image changed!";
                 
