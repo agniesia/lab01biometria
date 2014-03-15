@@ -107,14 +107,16 @@ namespace lab01biometria
             );
             
             sourcePixels=pixelData.DetachPixelData();
+            kolor = new image_RGB(sourcePixels, w, h);
+            szary = new image_Gray(sourcePixels, w, h);
             
             
             
         }
 
-        private async void bitmpe(byte[] tablica)
+        private async void bitmpe(byte[] tablica,image_as_tab obiekt)
         {
-            WriteableBitmap writeableBitmap = new WriteableBitmap((int)decoder.PixelWidth, (int)decoder.PixelHeight);
+            WriteableBitmap writeableBitmap = new WriteableBitmap((int)obiekt.w, (int)obiekt.h);
             using (Stream stream = writeableBitmap.PixelBuffer.AsStream())
             {
                 await stream.WriteAsync(tablica, 0, tablica.Length);
@@ -126,56 +128,155 @@ namespace lab01biometria
         {
 
             kolor = new image_RGB(sourcePixels, w, h);
-            szary = new image_Gray(sourcePixels);
-            
+            szary = new image_Gray(sourcePixels,w,h);
+
+
+
             switch (Event)
             {
                 case 1:
+
                     info.Text = "Change corolfull image to sepia colors. Sepia factor belongs to the interval from 20 to 40";
-                    kolor.sepia(20);
-                    bitmpe(kolor.show());
+                    if (kolor != null)
+                    {
+                        kolor.sepia(20);
+                        bitmpe(kolor.show(), kolor);
+                        szary = null;
+                    }
+                    else if (szary != null)
+                    {
+                        info.Text = "Gray image and sepia dont work";
+
+                    }
+                    else
+                        info.Text = "image empty";
                     break;
-                    //moze byc warunek
+
+                //moze byc warunek
 
                 case 2:
 
                     info.Text = "Change corolfull image to grayscale with natural luminaces algorithm";
-                    szary = kolor.grey_naturalimage();
-                    bitmpe(szary.show());
+                    if (kolor != null)
+                    {
+                        szary = kolor.grey_naturalimage();
+                        kolor = null;
+                        bitmpe(szary.show(), szary);
+                    }
+                    else if (szary != null)
+                    {
+                        info.Text = "image is grey!";
+                    }
+                    else
+                        info.Text = "image empty";
+                        
+                    
+
+                    
                     ///mozebyc warunek
                     break;
                 case 3:
                     info.Text = "Histogram Eqaliztaion increases the global contrast of many images. Histogram of the color is distributed for all intensities";
                     //normalizacja na szarym!
-                    kolor.normalize();
-                    bitmpe(kolor.show());
-                    szary.normalize();
-                    ///warunek
-                    //bitmpe(szary.show());
+                    if (kolor != null)
+                    {
+                        kolor.normalize();
+                        bitmpe(kolor.show(), kolor);
+                        szary = null;
+                    }
+                    if (szary != null)
+                    {
+                        szary.normalize();
+                        ///warunek
+                        bitmpe(szary.show(), szary);
+                        kolor = null;
+                    }
+                    else
+                        info.Text = "image empty";
+
+
+
 
                     break;
                 case 4:
                     info.Text = "Change corofull image to grayscale with avrage algorithm";
                     //moze byc warunek
-                    szary = kolor.greyimage();
-                    bitmpe(szary.show());
+                    if (kolor != null)
+                    {
+                        szary = kolor.greyimage();
+                        kolor = null;
+                        bitmpe(szary.show(), szary);
+                    }
+                    else if (szary != null)
+                    {
+                        info.Text = "image is grey!";
+                        bitmpe(szary.show(), szary);
+                    }
+                    else
+                        info.Text = "image empty";
+
 
                     break;
 
                 case 5:
                     info.Text = "Change image to negative image";
-                    kolor.negative();
-                    bitmpe(kolor.show());
+                    if (kolor != null)
+                    {
+                        kolor.negative();
+                        bitmpe(kolor.show(), kolor);
+                    }
                     //warunek
-                    szary.negative();
-                    //bitmpe(szary.show());
+                    if (szary != null)
+                    {
+                        szary.negative();
+                        bitmpe(szary.show(), szary);
+                    }
+                    else
+                        info.Text = "image empty";
+
+                    break;
+                case 6:
+                    info.Text = "Roberts cross is  differential operator, its  approximate the gradient of an image for edage detection. Sensitivity to noise";
+                    if (kolor != null)
+                    {
+                        kolor.Roberts();
+                        bitmpe(kolor.show(), kolor);
+                    }
+                    //warunek
+                    if (szary != null)
+                    {
+                        //szary.Roberts();
+                        bitmpe(szary.show(), szary);
+                    }
+                    else
+                        info.Text = "There is no image";
+
+
+                    break;
+                case 7:
+                    info.Text = " Sobel is differential operator, its  approximate the gradient of an image for edage detection.Less sensitive to isolated high intensity";
+                    if (kolor != null)
+                    {
+                        kolor.sobel();
+                        bitmpe(kolor.show(), kolor);
+                    }
+                    //warunek
+                    if (szary != null)
+                    {
+                        //szary.sobel();
+                        bitmpe(szary.show(), szary);
+                    }
+                    else
+                        info.Text = "There is no image";
+
 
                     break;
 
 
+
                 default:
                     info.Text = "Nothing was selected";
-                    bitmpe(kolor.show());
+                    //bitmpe(kolor.show());
                     break;
             }
             
@@ -188,15 +289,174 @@ namespace lab01biometria
 
         private void OK_Click(object sender, RoutedEventArgs e)
         {
-            _try_Click(sender, e);
+            switch (Event)
+            {
+                case 1:
+
+                    info.Text = "Change corolfull image to sepia colors. Sepia factor belongs to the interval from 20 to 40";
+                    if (kolor != null)
+                    {
+                        kolor.sepia(20);
+                        bitmpe(kolor.show(), kolor);
+                        szary = null;
+                    }
+                    else if (szary != null)
+                    {
+                        info.Text = "Gray image and sepia dont work";
+
+                    }
+                    else
+                        info.Text = "image empty";
+                    break;
+
+                //moze byc warunek
+
+                case 2:
+
+                    info.Text = "Change corolfull image to grayscale with natural luminaces algorithm";
+                    if (kolor != null)
+                    {
+                        szary = kolor.grey_naturalimage();
+                        kolor = null;
+                        bitmpe(szary.show(), szary);
+                    }
+                    else if (szary != null)
+                    {
+                        info.Text = "image is grey!";
+                    }
+                    else
+                        info.Text = "image empty";
+
+
+
+
+                    ///mozebyc warunek
+                    break;
+                case 3:
+                    info.Text = "Histogram Eqaliztaion increases the global contrast of many images. Histogram of the color is distributed for all intensities";
+                    //normalizacja na szarym!
+                    if (kolor != null)
+                    {
+                        kolor.normalize();
+                        bitmpe(kolor.show(), kolor);
+                        szary = null;
+                    }
+                    if (szary != null)
+                    {
+                        szary.normalize();
+                        ///warunek
+                        bitmpe(szary.show(), szary);
+                        kolor = null;
+                    }
+                    else
+                        info.Text = "image empty";
+
+
+
+
+                    break;
+                case 4:
+                    info.Text = "Change corofull image to grayscale with avrage algorithm";
+                    //moze byc warunek
+                    if (kolor != null)
+                    {
+                        szary = kolor.greyimage();
+                        kolor = null;
+                        bitmpe(szary.show(), szary);
+                    }
+                    else if (szary != null)
+                    {
+                        info.Text = "image is grey!";
+                        bitmpe(szary.show(), szary);
+                    }
+                    else
+                        info.Text = "image empty";
+
+
+                    break;
+
+                case 5:
+                    info.Text = "Change image to negative image";
+                    if (kolor != null)
+                    {
+                        kolor.negative();
+                        bitmpe(kolor.show(), kolor);
+                    }
+                    //warunek
+                    if (szary != null)
+                    {
+                        szary.negative();
+                        bitmpe(szary.show(), szary);
+                    }
+                    else
+                        info.Text = "image empty";
+
+                    break;
+                case 6:
+                    info.Text = "Roberts cross is  differential operator, its  approximate the gradient of an image for edage detection. Sensitivity to noise";
+                    if (kolor != null)
+                    {
+                        kolor.Roberts();
+                        bitmpe(kolor.show(), kolor);
+                    }
+                    //warunek
+                    if (szary != null)
+                    {
+                        //szary.Roberts();
+                        bitmpe(szary.show(), szary);
+                    }
+                    else
+                        info.Text = "There is no image";
+
+
+                    break;
+                case 7:
+                    info.Text = " Sobel is differential operator, its  approximate the gradient of an image for edage detection.Less sensitive to isolated high intensity";
+                    if (kolor != null)
+                    {
+                        kolor.sobel();
+                        bitmpe(kolor.show(), kolor);
+                    }
+                    //warunek
+                    if (szary != null)
+                    {
+                        //szary.sobel();
+                        bitmpe(szary.show(), szary);
+                    }
+                    else
+                        info.Text = "There is no image";
+
+
+                    break;
+
+
+
+                default:
+                    info.Text = "Nothing was selected";
+                    //bitmpe(kolor.show());
+                    break;
+            }
+            
 
             if (kolor != null)
             {
                 this.obrazek.Source = this.im_effect.Source;
-                double c = 0;
-                for (int i = 0; i < kolor.utab.Length; i = i + 4)
+               
+
+                sourcePixels = kolor.utab;
+                
+                info.Text = "Image changed!";
+                
+
+
+            }
+            else if (szary!=null)
                 {
-                    c += (Math.Abs(kolor.utab[i] - kolor.utab[i + 1]) + Math.Abs(kolor.utab[i] - kolor.utab[i + 2]) + Math.Abs(kolor.utab[i + 1] - kolor.utab[i + 2]));
+                this.obrazek.Source = this.im_effect.Source;
+                double c = 0;
+                for (int i = 0; i < szary.utab.Length; i = i + 4)
+                {
+                    c += (Math.Abs(szary.utab[i] - szary.utab[i + 1]) + Math.Abs(szary.utab[i] - szary.utab[i + 2]) + Math.Abs(szary.utab[i + 1] - szary.utab[i + 2]));
                 }
                 if (c == 0.0)
                 {
@@ -205,7 +465,12 @@ namespace lab01biometria
                     return;
                 }
 
-                sourcePixels = kolor.utab;
+                sourcePixels = szary.utab;
+                
+                info.Text = "Image changed!";
+                
+
+
             }
             else
                 info.Text = "object is null exeption needed";
@@ -242,6 +507,39 @@ namespace lab01biometria
         private void negative_GotFocus(object sender, RoutedEventArgs e)
         {
             Event = 5;
+        }
+
+        private void roberts_GotFocus(object sender, RoutedEventArgs e)
+        {
+            Event = 6;
+        }
+
+        private void sobel_GotFocus(object sender, RoutedEventArgs e)
+        {
+            Event = 7;
+        }
+
+        private void AppBar_Opened(object sender, object e)
+        {
+            if (!histapp.IsEnabled)
+            {
+                if (histapp.IsOpen)
+                    histapp.IsOpen = false;
+            }
+        }
+
+        private void buttonhist_Click(object sender, RoutedEventArgs e)
+        {
+            if (kolor != null)
+            {
+                var hist = kolor.histogram();
+                bitmpe(hist.utab, hist);
+            }
+            else if (szary != null)
+            {
+                var hist = szary.histogram();
+                bitmpe(hist.utab, hist);
+            }
         }
 
         
