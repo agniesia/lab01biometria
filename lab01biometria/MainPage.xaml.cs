@@ -129,14 +129,17 @@ namespace lab01biometria
 
             kolor = new image_RGB(sourcePixels, w, h);
             szary = new image_Gray(sourcePixels,w,h);
+            SwitchEvent();
+            
+        }
 
-
-
+        private void SwitchEvent()
+        {
             switch (Event)
             {
                 case 1:
 
-                    info.Text = "Change corolfull image to sepia colors. Sepia factor belongs to the interval from 20 to 40";
+                    info.Text = "Change corolfull image to sepia colors. Sepia factor  20 ";
                     if (kolor != null)
                     {
                         kolor.sepia(20);
@@ -169,10 +172,10 @@ namespace lab01biometria
                     }
                     else
                         info.Text = "image empty";
-                        
-                    
 
-                    
+
+
+
                     ///mozebyc warunek
                     break;
                 case 3:
@@ -184,7 +187,7 @@ namespace lab01biometria
                         bitmpe(kolor.show(), kolor);
                         szary = null;
                     }
-                     else if (szary != null)
+                    else if (szary != null)
                     {
                         szary.normalize();
                         ///warunek
@@ -243,7 +246,7 @@ namespace lab01biometria
                         bitmpe(temp.show(), temp);
                     }
                     //warunek
-                    else if  (szary != null)
+                    else if (szary != null)
                     {
                         //szary.Roberts();
                         bitmpe(szary.show(), szary);
@@ -271,7 +274,24 @@ namespace lab01biometria
 
 
                     break;
+                case 8:
+                    info.Text = "Change corolfull image to sepia colors. Sepia factor  40";
+                    if (kolor != null)
+                    {
+                        kolor.sepia(40);
+                        bitmpe(kolor.show(), kolor);
+                    }
+                    //warunek
+                    else if (szary != null)
+                    {
+                        //szary.sobel();
+                        // bitmpe(szary.show(), szary);
+                    }
+                    else
+                        info.Text = "There is no image";
 
+
+                    break;
 
 
                 default:
@@ -279,165 +299,14 @@ namespace lab01biometria
                     //bitmpe(kolor.show());
                     break;
             }
-            
+
             //sourcePixels =(byte[]) a.utab.Clone();
             //this.obrazek.Source = this.im_effect.Source;
-            
         }
-
-           
 
         private void OK_Click(object sender, RoutedEventArgs e)
         {
-            switch (Event)
-            {
-                case 1:
-
-                    info.Text = "Change corolfull image to sepia colors. Sepia factor belongs to the interval from 20 to 40";
-                    if (kolor != null)
-                    {
-                        kolor.sepia(20);
-                        bitmpe(kolor.show(), kolor);
-                        szary = null;
-                    }
-                    else if (szary != null)
-                    {
-                        info.Text = "Gray image and sepia dont work";
-
-                    }
-                    else
-                        info.Text = "image empty";
-                    break;
-
-                //moze byc warunek
-
-                case 2:
-
-                    info.Text = "Change corolfull image to grayscale with natural luminaces algorithm";
-                    if (kolor != null)
-                    {
-                        szary = kolor.grey_naturalimage();
-                        kolor = null;
-                        bitmpe(szary.show(), szary);
-                    }
-                    else if (szary != null)
-                    {
-                        info.Text = "image is grey!";
-                    }
-                    else
-                        info.Text = "image empty";
-
-
-
-
-                    ///mozebyc warunek
-                    break;
-                case 3:
-                    info.Text = "Histogram Eqaliztaion increases the global contrast of many images. Histogram of the color is distributed for all intensities";
-                    //normalizacja na szarym!
-                    if (kolor != null)
-                    {
-                        kolor.normalize();
-                        bitmpe(kolor.show(), kolor);
-                        szary = null;
-                    }
-                     else if (szary != null)
-                    {
-                        szary.normalize();
-                        ///warunek
-                        bitmpe(szary.show(), szary);
-                        kolor = null;
-                    }
-                    else
-                        info.Text = "image empty";
-
-
-
-
-                    break;
-                case 4:
-                    info.Text = "Change corofull image to grayscale with avrage algorithm";
-                    //moze byc warunek
-                    if (kolor != null)
-                    {
-                        szary = kolor.greyimage();
-                        kolor = null;
-                        bitmpe(szary.show(), szary);
-                    }
-                    else if (szary != null)
-                    {
-                        info.Text = "image is grey!";
-                        bitmpe(szary.show(), szary);
-                    }
-                    else
-                        info.Text = "image empty";
-
-
-                    break;
-
-                case 5:
-                    info.Text = "Change image to negative image";
-                    if (kolor != null)
-                    {
-                        kolor.negative();
-                        bitmpe(kolor.show(), kolor);
-                    }
-                    //warunek
-                     else if (szary != null)
-                    {
-                        szary.negative();
-                        bitmpe(szary.show(), szary);
-                    }
-                    else
-                        info.Text = "image empty";
-
-                    break;
-                case 6:
-                    info.Text = "Roberts cross is  differential operator, its  approximate the gradient of an image for edage detection. Sensitivity to noise";
-                    if (kolor != null)
-                    {
-                        image_RGB temp = kolor.Roberts();
-                        kolor=temp;
-                        bitmpe(kolor.show(), kolor);
-                    }
-                    //warunek
-                     else if (szary != null)
-                    {
-                        //szary.Roberts();
-                        bitmpe(szary.show(), szary);
-                    }
-                    else
-                        info.Text = "There is no image";
-
-
-                    break;
-                case 7:
-                    info.Text = " Sobel is differential operator, its  approximate the gradient of an image for edage detection.Less sensitive to isolated high intensity";
-                    if (kolor != null)
-                    {
-                        kolor.sobel();
-                        bitmpe(kolor.show(), kolor);
-                    }
-                    //warunek
-                     else if (szary != null)
-                    {
-                        //szary.sobel();
-                        bitmpe(szary.show(), szary);
-                    }
-                    else
-                        info.Text = "There is no image";
-
-
-                    break;
-
-
-
-                default:
-                    info.Text = "Nothing was selected";
-                    //bitmpe(kolor.show());
-                    break;
-            }
-            
+            SwitchEvent();
 
             if (kolor != null)
             {
@@ -463,12 +332,12 @@ namespace lab01biometria
                 {
 
                     sourcePixels =(byte[]) szary.utab.Clone();
-                    return;
+                    info.Text = "Image changed!";
                 }
 
-                sourcePixels =(byte[]) szary.utab.Clone();
+     
                 
-                info.Text = "Image changed!";
+                
                 
 
 
@@ -541,6 +410,11 @@ namespace lab01biometria
                 var hist = szary.histogram();
                 bitmpe(hist.utab, hist);
             }
+        }
+
+        private void sepia40_GotFocus(object sender, RoutedEventArgs e)
+        {
+            Event = 8;
         }
 
         

@@ -69,10 +69,11 @@
                     <ImageBrush Stretch="Fill"/>
                 </ComboBox.BorderBrush>
                 <ComboBoxItem x:Name="natural_grey" Content="natural grey" GotFocus="natural_grey_GotFocus" />
-                <ComboBoxItem x:Name="sepia" Content="sepia" GotFocus="sepia_GotFocus" />
+                <ComboBoxItem x:Name="sepia20" Content="sepia" GotFocus="sepia_GotFocus" />
                 <ComboBoxItem x:Name="normalize" Content="normalize" GotFocus="normalize_GotFocus"/>
                 <ComboBoxItem x:Name="grey" Content="grey" GotFocus="grey_GotFocus"/>
                 <ComboBoxItem x:Name="negative" Content="negativ" GotFocus="negative_GotFocus"/>
+                <ComboBoxItem x:Name="sepia40" Content="sepia40" GotFocus="sepia40_GotFocus"/>
 
             </ComboBox>
             <Button x:Name="buttonhist" Click="buttonhist_Click" Content="Histogram" HorizontalAlignment="Left" Margin="317,80,0,0" VerticalAlignment="Top" Height="51" Width="126" Background="#FF071C64"/>

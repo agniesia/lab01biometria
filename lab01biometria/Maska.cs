@@ -147,4 +147,41 @@ namespace lab01biometria
 
 
     }
+
+    class MeanFilterSmooth1:Maska
+    {
+        public int[,] ElemMaski={{1,1,1},{1,1,1},{1,1,1}};
+        public byte Rozmiar=3;
+        public int Norma=9;
+    }
+    class MeanFilterSmooth2 : Maska
+    {
+        public int[,] ElemMaski = { { 1, 1, 1 }, { 1, 2, 1 }, { 1, 1, 1 } };
+        public byte Rozmiar = 3;
+        public int Norma = 10;
+    }
+    class MeanFilterSmooth4 : Maska
+    {
+        public int[,] ElemMaski = { { 1, 2, 1 }, { 2, 4, 2 }, { 1, 2, 1 } };
+        public byte Rozmiar = 3;
+        public int Norma = 16;
+    }
+    class MeanFiltersharpen5 : Maska
+    {
+        public int[,] ElemMaski = { { 0, -1, 0}, { -1, 5, -1 }, { 0, -1, 0 } };
+        public byte Rozmiar = 3;
+        public int Norma = 1;
+    }
+    class MeanFilterSharpen9 : Maska
+    {
+        public int[,] ElemMaski = { { 1, -2, 1}, { -2, 9, -2 }, { 1, -2, 1} };
+        public byte Rozmiar = 3;
+        public int Norma = 1;
+    }
+    class MeanFilteSharpen5and2 : Maska
+    {
+        public int[,] ElemMaski = { { 1, -2, 1}, { -2, 5, -2 }, { 1, -2, 1 } };
+        public byte Rozmiar = 3;
+        public int Norma = 1;
+    }
 }
