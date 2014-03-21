@@ -12,13 +12,22 @@ namespace lab01biometria
         public byte[][] G;
         public byte[][] R;
         public byte[][] alfa;
+        public byte[] RCanal;
+        public byte[] GCanal;
+        public byte[] BCanal;
 
+        public override void Accept(Visitor visitor) {
+            visitor.Visit(this);
+        }
 
         public image_RGB(byte[] sourcePixels, int wight, int hight)
             : base(sourcePixels, wight, hight)
         {
 
 
+            byte[] RCanal = utab.Where((x, i) => i % 4 == 0).ToArray();
+            byte[] BCanal = utab.Where((x, i) => i % 4 == 1).ToArray();
+            byte[] GCanal = utab.Where((x, i) => i % 4 == 2).ToArray();
 
             int k = 0;
             w = wight;
@@ -304,6 +313,87 @@ namespace lab01biometria
 
             //}
             //return histobraz;
+        }
+        public void noisegeneratorSoliPieprz(int chance){
+
+            var zakres=w*h*chance/100;
+            Random rnd = new Random(); 
+            byte[] IndexRandom=new byte[zakres];
+            for (int i=0; i < zakres; i++)
+            {
+                var indexX = rnd.Next(R.GetLength(0));
+                var indexY = rnd.Next(R.GetLength(1));
+                if (rnd.Next(0, 2)==0){
+                    R[indexX][indexY] = 255;
+                    G[indexX][indexY] = 255;
+                    B[indexX][indexY] = 255;
+                }
+                else
+                {
+                    R[indexX][indexY] = 0;
+                    G[indexX][indexY] = 0;
+                    B[indexX][indexY] = 0;
+
+                }
+            }
+
+            
+        }
+        public void noisegeneratorRownomienySameCalanl(int chance, byte zakres1, byte zakres2)
+        {
+            var zakres = w * h * chance / 100;
+            Random rnd = new Random();
+            byte[] IndexRandom = new byte[zakres];
+            for (int i = 0; i < zakres; i++)
+            {
+                var indexX = rnd.Next(R.GetLength(0));
+                var indexY = rnd.Next(R.GetLength(1));
+
+                byte szum =(byte)rnd.Next(zakres1,zakres2);
+                if (rnd.Next(0, 2) == 0)
+                {
+                    R[indexX][indexY] -= szum;
+                    G[indexX][indexY] -= szum;
+                    B[indexX][indexY] -= szum;
+                }
+                else
+                {
+                    R[indexX][indexY] += szum;
+                    G[indexX][indexY] += szum;
+                    B[indexX][indexY] += szum;
+
+                }
+
+            }
+            //NORMALIZCJA (napisz funkcje)
+        }
+        public  void noisegeneratorRownomienyDifferCalanl(int chance, byte zakres1, byte zakres2){
+            var zakres = w * h * chance / 100;
+            Random rnd = new Random();
+            byte[] IndexRandom = new byte[zakres];
+            for (int i = 0; i < zakres; i++)
+            {
+                var indexX = rnd.Next(R.GetLength(0));
+                var indexY = rnd.Next(R.GetLength(1));
+
+                var szum1 = rnd.Next(zakres1, zakres2+1) * Math.Pow(-1, rnd.Next(0, 2));
+                var szum2 = rnd.Next(zakres1, zakres2+1) * Math.Pow(-1, rnd.Next(0, 2));
+                var szum3 = rnd.Next(zakres1, zakres2+1) * Math.Pow(-1, rnd.Next(0, 2));
+           
+                //zmienić typ b w sumie potem nie potrzebnie rzutuje a mozna zrobic rzutowanie dopiero przy wyswietlanie
+                //R[indexX][indexY] += szum1;
+                //G[indexX][indexY] += szum2;
+                //B[indexX][indexY] += szum3;
+            }
+
+        }
+        public void MedianFilter(int rozmiar){
+            int[,] TempR = new int[w, h];
+            int[,] TempG = new int[w, h];
+            int[,] TempB = new int[w, h];
+
+
+
         }
 
 

@@ -8,7 +8,8 @@ namespace lab01biometria
 {
     class image_Gray : image_as_tab
     {
-        byte[][] Greycanal;
+        public byte[][] Greycanal;
+        public byte[][] alfa;
         public image_Gray() : base() { }
 
         public image_Gray(byte[] orginal_tab, int wight, int hight)
@@ -24,11 +25,17 @@ namespace lab01biometria
                 {
                     k = 4 * (j * w + i);
                     Greycanal[i][j] = orginal_tab[k];
+                    alfa[i][j] = orginal_tab[k+3];
                 }
             }
         }
+        public override void Accept(Visitor visitor)
+        {
+            visitor.Visit(this);
+        }
         public void normalize()
         {
+            
             //max
             var max = utab.Max();
 
@@ -114,9 +121,10 @@ namespace lab01biometria
         {
             //local jest rozmiare maski nie odleglosia od srodka
             byte zero = 0, one = 1;
-
+            byte[][] Temp = new byte[this.w][];
             for (int x = 1; x < this.w - 1; x++)
             {
+                Temp[x] = new byte[this.h];
                 for (int y = 1; y < this.h - 1; y++)
                 {
                     var Suma = 0;
@@ -130,16 +138,19 @@ namespace lab01biometria
 
                     }
                     var localmean = Suma / Math.Pow(local, 2);
-                    Greycanal[x][y] = Greycanal[x][y] >= localmean ? one : zero;
+                    Temp[x][y] = Greycanal[x][y] >= localmean ? one : zero;
                 }
             }
+            Greycanal = (byte[][])Temp.Clone();
         }
         public void BinaryLocalGlobal(int local, int sigma)
         {
             byte zero = 0, one = 1;
             var globalmean = utab.Sum(x => x) / utab.Length;
+            byte[][] Temp = new byte[this.w][];
             for (int x = 1; x < this.w - 1; x++)
             {
+                Temp[x] = new byte[this.h];
                 for (int y = 1; y < this.h - 1; y++)
                 {
                     var Suma = 0;
@@ -156,13 +167,14 @@ namespace lab01biometria
 
                     if ((globalmean - sigma < localmean) && (localmean < globalmean + sigma))
                     {
-                        Greycanal[x][y] = Greycanal[x][y] >= localmean ? one : zero;
+                        Temp[x][y] = Greycanal[x][y] >= localmean ? one : zero;
                     }
                     else
                         //mozna dodac +/- sigma ale konieczny dodatkowy warunek(mysle ze lepsze z sigma)
-                        Greycanal[x][y] = Greycanal[x][y] >= globalmean? one : zero;
+                        Temp[x][y] = Greycanal[x][y] >= globalmean? one : zero;
                 }
             }
+            Greycanal = (byte[][])Temp.Clone();
         }
         //binryzacja bez brzegów 
         public void Bersen(int local)
@@ -171,8 +183,10 @@ namespace lab01biometria
             var globalmean = utab.Sum(x => x) / utab.Length;
             byte epsilon = 1;
             var Suma = 0;
+            byte[][] Temp = new byte[this.w][];
             for (int x = 1; x < this.w - 1; x++)
             {
+                Temp[x] = new byte[this.h];
                 for (int y = 1; y < this.h - 1; y++)
                 {
                     Suma = 0;
@@ -195,18 +209,63 @@ namespace lab01biometria
 
                     if ((TempMax-TempMax)<epsilon)
                     {
-                        Greycanal[x][y] = Greycanal[x][y] >= globalmean ? one : zero;
+                        Temp[x][y] = Greycanal[x][y] >= globalmean ? one : zero;
                     }
                     else
                         //mozna dodac +/- sigma ale konieczny dodatkowy warunek(mysle ze lepsze z sigma)
-                        Greycanal[x][y] = Greycanal[x][y] >= level ? one : zero;
+                        Temp[x][y] = Greycanal[x][y] >= level ? one : zero;
                 }
             }
+            Greycanal = (byte[][])Temp.Clone();
+
         }
         public void Otsu()
         {
-
+            int[] Hist = new int[256];
+            for (int k = 0; k < 256; k++)
+            {
+                Hist[k] = utab.Where((x, i) => i % 4 == 0 && x == k).ToArray().Length;
+            }
+            var suma = 0;
+            byte one = 1;
+            byte zero = 0;
+            var total = this.w * this.h;
+            for (int k = 0; k < 256; k++)
+            {
+                suma += Hist[k] * k;
+            }
+            var sumB = 0;
+            var wB = 0;
+            var wF = 0;
+            var mB=0;
+            var mF=0;
+            var max = 0.0;
+            var between = 0.0;
+            var threshold1 = 0.0;
+            var threshold2 = 0.0;
+            for (var i = 0; i < 256; ++i) {
+                wB += Hist[i];
+                if (wB == 0)
+                    continue;
+                wF = total - wB;
+                if (wF == 0)
+                    break;
+                sumB += i * Hist[i];
+                mB = sumB / wB;
+                mF = (suma - sumB) / wF;
+                between = wB * wF * Math.Pow(mB - mF, 2);
+                if ( between >= max ) {
+                    threshold1 = i;
+                    if ( between > max ) {
+                        threshold2 = i;
+                    }
+                    max = between;            
+                }
+            }
+            var progowanie= ( threshold1 + threshold2 ) / 2.0;
+            utab = utab.Select(x => x >= progowanie ? one : zero).ToArray();
         }
+        
 
 
 

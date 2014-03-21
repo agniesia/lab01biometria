@@ -54,6 +54,8 @@ namespace lab01biometria
         int h = 0;
         image_RGB kolor;
         image_Gray szary;
+        image_as_tab a;
+
         private async void wczytajimage(object sender, RoutedEventArgs e)
         {
             FileOpenPicker FOP = new FileOpenPicker(); // Klasa okna wybierania pliku
@@ -113,7 +115,7 @@ namespace lab01biometria
             
             
         }
-
+        
         private async void bitmpe(byte[] tablica,image_as_tab obiekt)
         {
             WriteableBitmap writeableBitmap = new WriteableBitmap((int)obiekt.w, (int)obiekt.h);
@@ -129,7 +131,11 @@ namespace lab01biometria
 
             kolor = new image_RGB(sourcePixels, w, h);
             szary = new image_Gray(sourcePixels,w,h);
-            SwitchEvent();
+            NormalizeImage normalizacja = new NormalizeImage();
+            a = kolor;
+            normalizacja.NormalizeAll(a);
+            bitmpe(kolor.show(), kolor);
+            //SwitchEvent();
             
         }
 
@@ -139,13 +145,14 @@ namespace lab01biometria
             {
                 case 1:
 
-                    info.Text = "Change corolfull image to sepia colors. Sepia factor  20 ";
+                   info.Text = "Change corolfull image to sepia colors. Sepia factor  20 ";
                     if (kolor != null)
                     {
                         kolor.sepia(20);
                         bitmpe(kolor.show(), kolor);
                         szary = null;
                     }
+                        //Nunit memento visitor
                     else if (szary != null)
                     {
                         info.Text = "Gray image and sepia dont work";
@@ -306,6 +313,7 @@ namespace lab01biometria
 
         private void OK_Click(object sender, RoutedEventArgs e)
         {
+
             SwitchEvent();
 
             if (kolor != null)
