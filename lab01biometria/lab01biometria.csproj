@@ -109,10 +109,21 @@
     </Compile>
     <Compile Include="Binary.cs" />
     <Compile Include="Grey.cs" />
+    <Compile Include="imageoperation\Bernsen.cs" />
+    <Compile Include="imageoperation\BinaryLocalGlobal.cs" />
+    <Compile Include="imageoperation\BinaryLocalMean.cs" />
+    <Compile Include="imageoperation\Histogram.cs" />
     <Compile Include="imageoperation\Negative.cs" />
+    <Compile Include="imageoperation\NoiseGeneratorSaltPeper.cs" />
+    <Compile Include="imageoperation\NoiseGeneratorUniformDiffCanal.cs" />
+    <Compile Include="imageoperation\NoiseGeneratorUniformOneCalanl.cs" />
+    <Compile Include="imageoperation\Otsu.cs" />
+    <Compile Include="imageoperation\RGBtoGrey.cs" />
+    <Compile Include="imageoperation\RGBtoNaturalGrey.cs" />
     <Compile Include="imageoperation\Roberts.cs" />
     <Compile Include="imageoperation\Sepia.cs" />
     <Compile Include="imageoperation\Sobel.cs" />
+    <Compile Include="imageoperation\ThresholdingGlobal.cs" />
     <Compile Include="image_as_tab.cs" />
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
