@@ -17,10 +17,15 @@ namespace lab01biometria
         {
 
             Greycanal = new byte[wight][];
+            alfa = new byte[wight][];
+
+
             var k = 0;
             for (int i = 0; i < wight; i++)
             {
+
                 Greycanal[i] = new byte[hight];
+               alfa[i] = new byte[hight];
                 for (int j = 0; j < hight; j++)
                 {
                     k = 4 * (j * w + i);

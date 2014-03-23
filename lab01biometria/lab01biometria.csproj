@@ -107,6 +107,9 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Binaryoperation\Segmentation.cs" />
+    <Compile Include="imageoperation\KuwaharaFilter.cs" />
+    <Compile Include="imageoperation\MedianFilterBetter.cs" />
     <Compile Include="imageoperation\MedianFilter.cs" />
     <Compile Include="Memento\Memento.cs" />
     <Compile Include="Memento\Memory.cs" />

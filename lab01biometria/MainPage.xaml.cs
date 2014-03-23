@@ -145,19 +145,19 @@ namespace lab01biometria
 
         private void _try_Click(object sender, RoutedEventArgs e)
         {
+            imagetowork= new Binary(imagetowork.utab,imagetowork.w,imagetowork.h);
+            //Originator org = new Originator();
+            //Caretaker caretaker = new Caretaker();
 
-            Originator org = new Originator();
-            Caretaker caretaker = new Caretaker();
+            //org.State = imagetowork;
+            //caretaker.Memento = org.SaveMemento();
 
-            org.State = imagetowork;
-            caretaker.Memento = org.SaveMemento();
-
-            imageoperation.Negative operatio = new imageoperation.Negative();
-            operatio.NegativeAll(imagetowork);
+            //imageoperation.Negative operatio = new imageoperation.Negative();
+            //operatio.NegativeAll(imagetowork);
             bitmpe(imagetowork);
 
-            org.RestoreMemento(caretaker.Memento);
-            imagetowork = org.State;
+            //org.RestoreMemento(caretaker.Memento);
+            //imagetowork = org.State;
 
             
            

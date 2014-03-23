@@ -24,9 +24,10 @@ namespace lab01biometria
             int[,] TempG = new int[rgb.w, rgb.h];
             int[,] TempB = new int[rgb.w, rgb.h];
 
-            for (int x = 0; x < rgb.w; x++)
+            byte start = (byte)(Rozmiar / 2);
+            for (int x = start; x < rgb.w - start; x++)
             {
-                for (int y = 0; y < rgb.h; y++)
+                for (int y = start; y <rgb.h - start; y++)
                 {
                     int SumaR = 0;
                     int SumaB = 0;
@@ -49,9 +50,10 @@ namespace lab01biometria
                     TempB[x, y] = SumaB / Norma;
                 }
             }
-            for (int c = 0; c < Rozmiar; c++)
+            //powino przypisc null==0 dla brzegów zdjęcia czyli obciac mozna zostawic stare piksele zmianiaj c p mozna tez maske nadkalamc
+            for (int c = 0; c < rgb.w; c++)
             {
-                for (int p = 0; p < Rozmiar; p++)
+                for (int p = 0; p < rgb.h; p++)
                 {
                     rgb.R[c][p] = (byte)TempR[c, p];
                     rgb.G[c][p] = (byte)TempG[c, p];
@@ -67,9 +69,10 @@ namespace lab01biometria
             int[,] TempGrey = new int[Grey.w, Grey.h];
 
 
-            for (int x = 0; x < Grey.w; x++)
+            byte start = (byte)(Rozmiar/ 2);
+            for (int x = start; x < Grey.w - start; x++)
             {
-                for (int y = 0; y < Grey.h; y++)
+                for (int y = start; y < Grey.h - start; y++)
                 {
                     int SumaGrey = 0;
                    
@@ -89,9 +92,9 @@ namespace lab01biometria
                 }
             }
             
-            for (int c = 0; c < Rozmiar; c++)
+            for (int c = 0; c < Grey.w; c++)
             {
-                for (int p = 0; p < Rozmiar; p++)
+                for (int p = 0; p < Grey.h; p++)
                 {
                     Grey.Greycanal[c][p] = (byte)TempGrey[c, p];
                     
