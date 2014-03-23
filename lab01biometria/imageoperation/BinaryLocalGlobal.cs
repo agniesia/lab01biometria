@@ -23,6 +23,7 @@ namespace lab01biometria.imageoperation
         {
             image_Gray Grey = new image_Gray();
             RGBtoGrey v = new RGBtoGrey();
+            
             v.RGBtoGreyAll(rgb);
 
             Grey = v.GreyElement;

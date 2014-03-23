@@ -33,6 +33,20 @@ namespace lab01biometria
         {
             visitor.Visit(this);
         }
+        public override image_as_tab copy()
+        {
+            image_Gray temp = new image_Gray();
+            temp.Greycanal = (byte[][])this.Greycanal.Clone();
+            temp.h = this.h;
+            temp.w = this.w;
+            temp.alfa = (byte[][])this.alfa.Clone();
+            temp.utab = (byte[])this.utab.Clone();
+            return temp;
+        }
+        public override byte[] show()
+        {
+            return this.utab;
+        }
         //public static explicit operator image_Gray(image_RGB rgb)
         //{
         //    // trzeba zrobic coś z akt

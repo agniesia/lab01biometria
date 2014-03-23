@@ -18,6 +18,7 @@ using Windows.UI.Xaml.Media.Imaging;
 using Windows.UI.Xaml.Navigation;
 using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.System.Threading;
+using lab01biometria.Memento;
 
 
 
@@ -54,6 +55,7 @@ namespace lab01biometria
         int h = 0;
        
         image_as_tab imagetowork;
+        static Type type;
 
         private async void wczytajimage(object sender, RoutedEventArgs e)
         {
@@ -108,18 +110,35 @@ namespace lab01biometria
             );
             
             sourcePixels=pixelData.DetachPixelData();
-            
+            byte[] RCanal = sourcePixels.Where((x, i) => i % 4 == 0).ToArray();
+            byte[] BCanal = sourcePixels.Where((x, i) => i % 4 == 1).ToArray();
+            byte[] GCanal = sourcePixels.Where((x, i) => i % 4 == 2).ToArray();
+            var suma=0;
+            for(int i=0;i<RCanal.Length;i++){
+
+                suma+=Math.Abs(RCanal[i] - BCanal[i]) + Math.Abs(RCanal[i] - RCanal[i]) + Math.Abs(BCanal[i] - RCanal[i]); 
+                
+                
+            }
+            if (suma!=0) 
+                {
+                    imagetowork = new image_RGB(sourcePixels, w, h);
+                    
+                }
+            else{
+                imagetowork= new image_Gray(sourcePixels, w, h);}
+
             
             
             
         }
         
-        private async void bitmpe(byte[] tablica,image_as_tab obiekt)
+        private async void bitmpe(image_as_tab obiekt)
         {
             WriteableBitmap writeableBitmap = new WriteableBitmap((int)obiekt.w, (int)obiekt.h);
             using (Stream stream = writeableBitmap.PixelBuffer.AsStream())
             {
-                await stream.WriteAsync(tablica, 0, tablica.Length);
+                await stream.WriteAsync(obiekt.show(), 0, obiekt.show().Length);
             }
             this.im_effect.Source = writeableBitmap;
         }
@@ -127,13 +146,24 @@ namespace lab01biometria
         private void _try_Click(object sender, RoutedEventArgs e)
         {
 
-            kolor = new image_RGB(sourcePixels, w, h);
-            szary = new image_Gray(sourcePixels,w,h);
-            NormalizeImage normalizacja = new NormalizeImage();
-            a = kolor;
-            normalizacja.NormalizeAll(a);
-            bitmpe(kolor.show(), kolor);
-            //SwitchEvent();
+            Originator org = new Originator();
+            Caretaker caretaker = new Caretaker();
+
+            org.State = imagetowork;
+            caretaker.Memento = org.SaveMemento();
+
+            imageoperation.Negative operatio = new imageoperation.Negative();
+            operatio.NegativeAll(imagetowork);
+            bitmpe(imagetowork);
+
+            org.RestoreMemento(caretaker.Memento);
+            imagetowork = org.State;
+
+            
+           
+            
+            
+           
             
         }
 
@@ -312,47 +342,12 @@ namespace lab01biometria
         private void OK_Click(object sender, RoutedEventArgs e)
         {
 
-            SwitchEvent();
+            imageoperation.Negative operatio = new imageoperation.Negative();
+            operatio.NegativeAll(imagetowork);
+            bitmpe(imagetowork);
+            //SwitchEvent();
 
-            if (kolor != null)
-            {
-                this.obrazek.Source = this.im_effect.Source;
-               
-
-                sourcePixels = (byte[])kolor.utab.Clone();
-                
-                info.Text = "Image changed!";
-                
-
-
-            }
-            else if (szary!=null)
-                {
-                this.obrazek.Source = this.im_effect.Source;
-                double c = 0;
-                for (int i = 0; i < szary.utab.Length; i = i + 4)
-                {
-                    c += (Math.Abs(szary.utab[i] - szary.utab[i + 1]) + Math.Abs(szary.utab[i] - szary.utab[i + 2]) + Math.Abs(szary.utab[i + 1] - szary.utab[i + 2]));
-                }
-                if (c == 0.0)
-                {
-
-                    sourcePixels =(byte[]) szary.utab.Clone();
-                    info.Text = "Image changed!";
-                }
-
-     
-                
-                
-                
-
-
-            }
-            else
-                info.Text = "object is null exeption needed";
-
-
-
+            
 
 
 
@@ -362,7 +357,7 @@ namespace lab01biometria
 
         private void sepia_GotFocus(object sender, RoutedEventArgs e)
         {
-            Event = 1;
+            
         }
 
         private void natural_grey_GotFocus(object sender, RoutedEventArgs e)
@@ -407,16 +402,16 @@ namespace lab01biometria
         private void buttonhist_Click(object sender, RoutedEventArgs e)
         {
             
-            if (kolor != null)
-            {
+            //if (kolor != null)
+            //{
                 
-                //bitmpe(hist.utab, hist);
-            }
-            else if (szary != null)
-            {
-                //var hist = szary.histogram();
-                //bitmpe(hist.utab, hist);
-            }
+            //    //bitmpe(hist.utab, hist);
+            //}
+            //else if (szary != null)
+            //{
+            //    //var hist = szary.histogram();
+            //    //bitmpe(hist.utab, hist);
+            //}
         }
 
         private void sepia40_GotFocus(object sender, RoutedEventArgs e)

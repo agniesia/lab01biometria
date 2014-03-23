@@ -19,7 +19,7 @@ namespace lab01biometria
         public override void Accept(Visitor visitor) {
             visitor.Visit(this);
         }
-
+        public image_RGB(): base(){}
         public image_RGB(byte[] sourcePixels, int wight, int hight)
             : base(sourcePixels, wight, hight)
         {
@@ -83,12 +83,31 @@ namespace lab01biometria
             }
             return temp;
         }
+        public override image_as_tab copy()
+        {
+            image_RGB temp = new image_RGB(utab,w,h);
+            for (int i = 0; i < w; i++)
+            {
+                for (int j = 0; j < h; j++)
+                {
+
+                    temp.B[i][j] = this.B[i][j];
+                    temp.R[i][j] = this.R[i][j];
+                    temp.G[i][j] = this.G[i][j];
+                    temp.alfa[i][j] =this.alfa[i][j];
+                }
+            }
+                    temp.h = this.h;
+                    temp.w = this.w;
+                    temp.utab = (byte[])this.utab.Clone();
+                    return temp;
+        }
 
         //public static explicit operator image_Gray(image_RGB rgb)
         //{
         //    // trzeba zrobic coś z akt
-        //    image_Gray temp = new image_Gray(rgb.utab,rgb.w,rgb.h);
-            
+        //    image_Gray temp = new image_Gray(rgb.utab, rgb.w, rgb.h);
+
 
         //    return temp;
         //}
