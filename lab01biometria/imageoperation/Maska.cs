@@ -112,10 +112,10 @@ namespace lab01biometria
 
     class MeanFilterSmooth1 : Maska
     {
-        public int[,] ElemMaski;
-        public byte Rozmiar = 3;
-        public int Norma = 9;
-        MeanFilterSmooth1(int rozmiar)
+        private int[,] ElemMaski;
+        private byte Rozmiar = 3;
+        private int Norma = 9;
+        public MeanFilterSmooth1(int rozmiar)
         {
             for (int i = 0; i < rozmiar; i++)
             {
