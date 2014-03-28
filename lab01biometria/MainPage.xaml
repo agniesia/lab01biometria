@@ -6,9 +6,9 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
-    <Page.Background>
-        <ImageBrush Stretch="Fill"/>
-    </Page.Background>
+	<Page.Background>
+		<ImageBrush Stretch="Fill" ImageSource="tło3.jpg"/>
+	</Page.Background>
     <Page.TopAppBar>
         <AppBar Margin="0,0,0,-195" Opacity="0.95">
             <AppBar.Background>
@@ -34,37 +34,51 @@
         </AppBar>
     </Page.TopAppBar>
 
-    <Grid>
+    <Grid Margin="0">
+    	<Grid.RowDefinitions>
+    		<RowDefinition Height="Auto"/>
+    		<RowDefinition Height="Auto"/>
+    	</Grid.RowDefinitions>
         <Grid.Background>
             <ImageBrush ImageSource="tło3.jpg"/>
         </Grid.Background>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="681*"/>
-            <ColumnDefinition Width="34*"/>
-            <ColumnDefinition Width="651*"/>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="Auto" MinWidth="77"/>
+            <ColumnDefinition Width="Auto" MinWidth="645"/>
         </Grid.ColumnDefinitions>
-        <Border BorderBrush="Black" BorderThickness="2" HorizontalAlignment="Left" Height="382" VerticalAlignment="Top" Width="514" Margin="48,47,0,0" RenderTransformOrigin="0.54,0.545" >
+        <Grid Grid.Column="1" UseLayoutRounding="True">
+        	<Grid.Background>
+        		<ImageBrush Stretch="Fill"/>
+        	</Grid.Background>
+    		<Button x:Name="_try"  Content="Aplied" Click="_try_Click" HorizontalAlignment="Center" Margin="0" VerticalAlignment="Top" RenderTransformOrigin="1,1" TabNavigation="Cycle" Background="#FF002B4E" FontSize="48">
+    			<Button.RenderTransform>
+    				<CompositeTransform/>
+    			</Button.RenderTransform>
+    		</Button>
+    		<TextBlock x:Name="info"  TextWrapping="Wrap" Text="info.." VerticalAlignment="Center" FontSize="16" FontWeight="Bold" HorizontalAlignment="Center" MinWidth="300" MinHeight="300" Margin="0,82,0,0">
+    			<TextBlock.Foreground>
+    				<LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+    					<GradientStop Color="Black" Offset="0"/>
+    					<GradientStop Color="#FF472A2A" Offset="1"/>
+    				</LinearGradientBrush>
+    			</TextBlock.Foreground>
+    		</TextBlock>
+    		<Button x:Name="OK" Content="OK" Click="OK_Click" HorizontalAlignment="Center" VerticalAlignment="Center" FontFamily="Global User Interface" Background="#FF002B4E" FontSize="48" Margin="0,382,0,0"/>
+    	</Grid>
+        <Border BorderBrush="Black" BorderThickness="2" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0" RenderTransformOrigin="0.54,0.545" Height="381" Width="514" >
             <Image x:Name="obrazek" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,0,-2,0" Height="377" Width="512" IsRightTapEnabled="False" />
         </Border>
         <Border BorderBrush="Black" BorderThickness="2" HorizontalAlignment="Left" Height="382" VerticalAlignment="Top" Width="514" Margin="109,58,0,0" RenderTransformOrigin="0.54,0.545" Grid.Column="2" >
-            <Image x:Name="im_effect" Source="Assets/placeholder-sdk.png" HorizontalAlignment="Left" VerticalAlignment="Top" Height="377" Width="512" Margin="1,2,-3,-1" RequestedTheme="Light"/>
+            <Image x:Name="im_effect" Source="Assets/placeholder-sdk.png" HorizontalAlignment="Left" VerticalAlignment="Top" Height="377" Width="512" Margin="-1,-12,-1,0" RequestedTheme="Light"/>
         </Border>
-        <Button x:Name="OK" Content="OK" Click="OK_Click" HorizontalAlignment="Left" Margin="620,380,0,0" VerticalAlignment="Top" Height="58" Width="126" Grid.ColumnSpan="3" FontFamily="Global User Interface" Background="#FF002B4E"/>
-        <Button x:Name="_try"  Content="Aplied" Click="_try_Click" HorizontalAlignment="Left" Margin="617,80,0,0" VerticalAlignment="Top" Height="59" Width="121" Grid.ColumnSpan="3" RenderTransformOrigin="1,1" TabNavigation="Cycle" Background="#FF002B4E">
-            <Button.RenderTransform>
-                <CompositeTransform/>
-            </Button.RenderTransform>
-        </Button>
-        <TextBlock x:Name="info"  TextWrapping="Wrap" Text="info.." VerticalAlignment="Top" Height="180" Width="248" Margin="578,164,0,0" FontSize="16" FontWeight="Bold" HorizontalAlignment="Left" Grid.ColumnSpan="3">
-            <TextBlock.Foreground>
-                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                    <GradientStop Color="Black" Offset="0"/>
-                    <GradientStop Color="#FF472A2A" Offset="1"/>
-                </LinearGradientBrush>
-            </TextBlock.Foreground>
-        </TextBlock>
-        <Grid Margin="55,492,126,11">
-            <ComboBox x:Name="choose"  HorizontalAlignment="Left" Margin="19,68,0,0" VerticalAlignment="Top" Width="211" Height="53" FontFamily="Segoe UI Emoji" MinHeight="53" IsDropDownOpen="True" BorderThickness="1" HorizontalContentAlignment="Center" ScrollViewer.HorizontalScrollBarVisibility="Auto" Foreground="#FF0068D4">
+        <Grid Margin="0" HorizontalAlignment="Right" Grid.Column="2" Width="168">
+        	<Grid.ColumnDefinitions>
+        		<ColumnDefinition Width="35"/>
+        		<ColumnDefinition Width="29"/>
+        		<ColumnDefinition Width="Auto"/>
+        	</Grid.ColumnDefinitions>
+            <ComboBox x:Name="choose" Margin="0" VerticalAlignment="Center" FontFamily="Segoe UI Emoji" MinHeight="53" IsDropDownOpen="True" BorderThickness="1" HorizontalContentAlignment="Center" ScrollViewer.HorizontalScrollBarVisibility="Auto" Foreground="#FF0068D4" RenderTransformOrigin="0.469,0.377" Grid.ColumnSpan="2">
                 <ComboBox.BorderBrush>
                     <ImageBrush Stretch="Fill"/>
                 </ComboBox.BorderBrush>
@@ -76,9 +90,9 @@
                 <ComboBoxItem x:Name="sepia40" Content="sepia40" GotFocus="sepia40_GotFocus"/>
 
             </ComboBox>
-            <Button x:Name="buttonhist" Click="buttonhist_Click" Content="Histogram" HorizontalAlignment="Left" Margin="317,80,0,0" VerticalAlignment="Top" Height="51" Width="126" Background="#FF071C64"/>
+            <Button x:Name="buttonhist" Click="buttonhist_Click" Content="Histogram" HorizontalAlignment="Center" Margin="0,8,0,7" VerticalAlignment="Center" Background="#FF071C64" Grid.Column="2" MinWidth="104" MinHeight="38"/>
         </Grid>
-        <ComboBox Grid.Column="2" HorizontalAlignment="Left" Margin="205,563,0,0" VerticalAlignment="Top" Width="186" Height="48" Background="White">
+        <ComboBox x:Name="filter" Grid.Column="2" HorizontalAlignment="Left" Margin="205,563,0,0" VerticalAlignment="Top" Width="186" Height="48" Background="White">
             <ComboBoxItem x:Name="roberts" Content="Roberts" GotFocus="roberts_GotFocus"/>
             <ComboBoxItem x:Name="sobel" Content="Sobel" GotFocus="sobel_GotFocus"/>
         </ComboBox>
@@ -86,8 +100,8 @@
         <AppBar x:Name="histapp" IsEnabled="False" Visibility="Collapsed" Opened="AppBar_Opened">
             <Grid>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition/>
-                    <ColumnDefinition/>
+                	<ColumnDefinition/>
+                	<ColumnDefinition/>
                 </Grid.ColumnDefinitions>
                 <Image x:Name="histogram" Height="100" Width="100"/>
                 <StackPanel Orientation="Horizontal"/>
@@ -95,5 +109,6 @@
 
             </Grid>
         </AppBar>
+        <Grid HorizontalAlignment="Left" Height="100" VerticalAlignment="Top" Width="100"/>
     </Grid>
 </Page>

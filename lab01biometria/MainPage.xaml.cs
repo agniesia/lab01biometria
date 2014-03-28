@@ -334,7 +334,7 @@ namespace lab01biometria
             //        //bitmpe(kolor.show());
             //        break;
             //}
-
+           
             ////sourcePixels =(byte[]) a.utab.Clone();
             ////this.obrazek.Source = this.im_effect.Source;
         }

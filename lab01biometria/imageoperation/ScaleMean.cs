@@ -19,7 +19,7 @@ namespace lab01biometria.imageoperation
         {
             image.Accept(this);
         }
-        public void Visitor(image_Gray Grey)
+        public void Visit(image_Gray Grey)
         {
             Skalowanie v = new Skalowanie(skala);
             v.SkalowanieAll(Grey);
@@ -27,7 +27,7 @@ namespace lab01biometria.imageoperation
             m.MaskaAll(Grey);
 
         }
-        public void Visitor(image_RGB rgb)
+        public void Visit(image_RGB rgb)
         {
             Skalowanie v = new Skalowanie(skala);
             v.SkalowanieAll(rgb);

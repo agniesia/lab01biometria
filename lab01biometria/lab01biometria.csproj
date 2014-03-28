@@ -108,7 +108,9 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="Binaryoperation\Segmentation.cs" />
+    <Compile Include="Binaryoperation\Skeleton.cs" />
     <Compile Include="imageoperation\BadImputFunkcionExeption.cs" />
+    <Compile Include="imageoperation\GaussFilter.cs" />
     <Compile Include="imageoperation\KuwaharaFilter.cs" />
     <Compile Include="imageoperation\MedianFilterBetter.cs" />
     <Compile Include="imageoperation\MedianFilter.cs" />
@@ -144,6 +146,9 @@
     <Compile Include="imageoperation\Normalize.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="obrazy\RGB.cs" />
+    <Compile Include="second.xaml.cs">
+      <DependentUpon>second.xaml</DependentUpon>
+    </Compile>
     <Compile Include="SingleImage.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -151,15 +156,14 @@
       <SubType>Designer</SubType>
     </AppxManifest>
     <None Include="ClassDiagram1.cd" />
-    <None Include="Help\Nokia Imaging SDK.chm" />
     <None Include="lab01biometria_TemporaryKey.pfx" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Binaryoperation\Assets\Logo.png" />
-    <Content Include="Binaryoperation\Assets\SmallLogo.png" />
-    <Content Include="Binaryoperation\Assets\SplashScreen.png" />
-    <Content Include="Binaryoperation\Assets\StoreLogo.png" />
+    <Content Include="Assets\Logo.png" />
+    <Content Include="Assets\SmallLogo.png" />
+    <Content Include="Assets\SplashScreen.png" />
+    <Content Include="Assets\StoreLogo.png" />
     <Content Include="placeholder-sdk.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -186,6 +190,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="second.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Reference Include="MathNet.Numerics, Version=2.6.1.30, Culture=neutral, processorArchitecture=MSIL">
@@ -197,7 +205,6 @@
     <VisualStudioVersion>12.0</VisualStudioVersion>
   </PropertyGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\WindowsXaml\v$(VisualStudioVersion)\Microsoft.Windows.UI.Xaml.CSharp.targets" />
-  <Import Project="..\packages\NokiaImagingSDK.1.1.177\build\win81\NokiaImagingSDK.targets" Condition="Exists('..\packages\NokiaImagingSDK.1.1.177\build\win81\NokiaImagingSDK.targets')" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

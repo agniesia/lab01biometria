@@ -12,9 +12,7 @@ namespace lab01biometria
         public byte[][] G;
         public byte[][] R;
         public byte[][] alfa;
-        public byte[] RCanal;
-        public byte[] GCanal;
-        public byte[] BCanal;
+        
 
         public override void Accept(Visitor visitor) {
             visitor.Visit(this);
@@ -25,9 +23,7 @@ namespace lab01biometria
         {
 
 
-            byte[] RCanal = utab.Where((x, i) => i % 4 == 0).ToArray();
-            byte[] BCanal = utab.Where((x, i) => i % 4 == 1).ToArray();
-            byte[] GCanal = utab.Where((x, i) => i % 4 == 2).ToArray();
+           
 
             int k = 0;
             w = wight;
