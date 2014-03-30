@@ -18,6 +18,7 @@ namespace lab01biometria.imageoperation
             this.zakres1=zakres1;
             this.zakres2 = zakres2;
         }
+        public void rob(image_as_tab image) { }
         public void Visit(image_RGB rgb)
         {
             var zakres = rgb.w * rgb.h * chance / 100;

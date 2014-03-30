@@ -14,6 +14,7 @@ namespace lab01biometria.imageoperation
             this.phi = phi;
 
         }
+        public void rob(image_as_tab image) { }
         public void RoateAll(image_as_tab image)
         {
             image.Accept(this);

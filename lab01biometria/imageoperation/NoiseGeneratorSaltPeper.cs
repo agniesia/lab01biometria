@@ -14,6 +14,7 @@ namespace lab01biometria.imageoperation
             this.chance = chance;
 
         }
+        public void rob(image_as_tab image) { }
         public void Visitor(image_RGB rgb){
             var zakres = rgb.w * rgb.h * chance / 100;
             Random rnd = new Random(); 

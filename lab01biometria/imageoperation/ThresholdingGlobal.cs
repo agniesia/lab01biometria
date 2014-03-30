@@ -22,6 +22,7 @@ namespace lab01biometria.imageoperation
             Visit(Grey);
             
         }
+        public void rob(image_as_tab image) { }
         public void Visit(image_Gray Grey)
         {
             var mean = Grey.utab.Sum(x => x) / Grey.utab.Length;

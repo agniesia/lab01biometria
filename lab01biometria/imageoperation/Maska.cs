@@ -17,6 +17,7 @@ namespace lab01biometria
         {
             image.Accept(this);
         }
+        public void rob(image_as_tab image) { }
         public void Visit(image_RGB rgb)
         {
             //convolve rgb

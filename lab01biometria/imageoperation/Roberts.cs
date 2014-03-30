@@ -11,6 +11,7 @@ namespace lab01biometria.imageoperation
         public void RobertsAll(image_as_tab image) {
             image.Accept(this);
         }
+        public void rob(image_as_tab image) { }
         public void Visit(image_RGB rgb){
             image_RGB temp = new image_RGB(rgb.utab, rgb.w, rgb.h);
             for (int i = 0; i < rgb.w - 1; i++)

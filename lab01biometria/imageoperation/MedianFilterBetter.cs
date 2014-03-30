@@ -17,6 +17,7 @@ namespace lab01biometria.imageoperation
         {
             image.Accept(this);
         }
+        public void rob(image_as_tab image) { }
         public void Visit(image_Gray Grey){
 
             int[,] TempGrey = new int[Grey.w, Grey.h];

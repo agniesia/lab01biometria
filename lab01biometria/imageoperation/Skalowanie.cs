@@ -15,6 +15,7 @@ namespace lab01biometria.imageoperation
             this.skala=skala;
 
         }
+        public void rob(image_as_tab image) { }
         public void SkalowanieAll(image_as_tab image)
         {
             image.Accept(this);

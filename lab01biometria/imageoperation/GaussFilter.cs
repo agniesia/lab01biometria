@@ -14,6 +14,7 @@ namespace lab01biometria.imageoperation
         public double[,] ElemMaski;
         public byte Rozmiar;
         public int Norma;
+        public void rob(image_as_tab image) { }
         public GaussFilter(byte rozmiar, double sigma)
         {
             this.Rozmiar = rozmiar;

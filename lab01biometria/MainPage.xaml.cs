@@ -132,6 +132,8 @@ namespace lab01biometria
             
             
         }
+        List<int> Lista= new List<int>();
+
         
         private async void bitmpe(image_as_tab obiekt)
         {
@@ -141,6 +143,7 @@ namespace lab01biometria
                 await stream.WriteAsync(obiekt.show(), 0, obiekt.show().Length);
             }
             this.change.Source = writeableBitmap;
+            
         }
 
         private void _try_Click(object sender, RoutedEventArgs e)
@@ -156,7 +159,7 @@ namespace lab01biometria
             caretaker.Memento = org.SaveMemento();
 
             imageoperation.Negative operatio = new imageoperation.Negative();
-            operatio.NegativeAll(imagetowork);
+           // operatio.NegativeAll(imagetowork);
             bitmpe(imagetowork);
 
             org.RestoreMemento(caretaker.Memento);
@@ -341,12 +344,13 @@ namespace lab01biometria
             ////sourcePixels =(byte[]) a.utab.Clone();
             ////this.obrazek.Source = this.im_effect.Source;
         }
-
+        Visitor operatio;
         private void OK_Click(object sender, RoutedEventArgs e)
         {
 
-            imageoperation.Negative operatio = new imageoperation.Negative();
-            operatio.NegativeAll(imagetowork);
+            
+            
+            operatio.rob(imagetowork);
             bitmpe(imagetowork);
             //SwitchEvent();
           
@@ -357,6 +361,39 @@ namespace lab01biometria
             
                 
         }
+        
+
+        private void oki_Click(object sender, RoutedEventArgs e)
+        {
+
+            int a=docoloroperation.SelectedIndex;
+            
+            switch (a)
+            {
+                case 0:
+                    operatio = new imageoperation.Negative();
+                    break;
+                case 1:
+                    operatio = new imageoperation.RGBtoGrey();
+                    break;
+                case 2:
+                    operatio = new imageoperation.RGBtoNaturalGrey();
+                    break;
+                case 3:
+                    operatio = new imageoperation.Negative();
+                    break;
+                case 4:
+                    int waga = (int)wagasepia.Value;
+                    operatio = new imageoperation.Sepia(waga);
+                    break;
+            }
+           
+            
+            color.Flyout.Hide();
+            
+        }
+
+        
 
         
 

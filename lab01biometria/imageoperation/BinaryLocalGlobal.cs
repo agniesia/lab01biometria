@@ -15,6 +15,7 @@ namespace lab01biometria.imageoperation
             this.local = local;
             this.sigma = sigma;
         }
+        public void rob(image_as_tab image) { }
         public void BinaryLocalGlobalAll(image_as_tab image)
         {
             image.Accept(this);

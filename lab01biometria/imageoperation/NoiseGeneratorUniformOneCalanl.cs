@@ -22,6 +22,7 @@ namespace lab01biometria.imageoperation
         {
             image.Accept(this);
         }
+        public void rob(image_as_tab image) { }
         public void  Visit(image_RGB rgb){
             var zakres = rgb.w * rgb.h * chance / 100;
             Random rnd = new Random();

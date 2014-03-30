@@ -8,7 +8,9 @@ namespace lab01biometria
 {
 
     interface Visitor
+
     {
+        void rob(image_as_tab image);
         void Visit(image_Gray Grey);
         void Visit(image_RGB RGB);
 
@@ -19,6 +21,7 @@ namespace lab01biometria
         {
             image.Accept(this);
         }
+        public void rob(image_as_tab image) { }
         public void Visit(image_RGB rgb) {
             var maxR = rgb.R.SelectMany(x => x).ToArray().Max();
             var maxB = rgb.B.SelectMany(x => x).ToArray().Max();

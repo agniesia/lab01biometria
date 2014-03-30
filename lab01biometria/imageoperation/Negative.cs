@@ -8,7 +8,7 @@ namespace lab01biometria.imageoperation
 {
     class Negative:Visitor
     {
-        public void NegativeAll(image_as_tab image)
+        public void rob(image_as_tab image)
         {
             image.Accept(this);
         }

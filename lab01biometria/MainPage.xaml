@@ -8,8 +8,36 @@
     mc:Ignorable="d" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch">
 	<Page.Resources>
 		<MenuFlyout x:Key="FlyoutBase2" Placement="Full">
-			<MenuFlyoutItem x:Name="norm" Text="MenuFlyoutItem"/>
+			<MenuFlyoutItem x:Name="norm" Text="Color" VerticalContentAlignment="Stretch" FontSize="64"/>
+			<MenuFlyoutItem HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" FontSize="64"/>
+			<MenuFlyoutItem FontSize="64"/>
+			<MenuFlyoutItem FontSize="64"/>
+			<MenuFlyoutItem FontSize="64"/>
 		</MenuFlyout>
+		<Flyout x:Key="coloroperation" Placement="Full" >
+			<Grid UseLayoutRounding="True">
+				<Grid.RowDefinitions>
+					<RowDefinition Height="Auto"/>
+					<RowDefinition Height="Auto"/>
+					<RowDefinition Height="Auto"/>
+				</Grid.RowDefinitions>
+				<Button x:Name="oki" Content="oki" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Grid.Row="2" Click="oki_Click" Padding="0" FontSize="48"/>
+				<ListView x:Name="docoloroperation" Margin="0">
+					<ListViewItem x:Name="normal" Content="Normalization" Margin="0" FontSize="48" HorizontalContentAlignment="Center"/>
+					<ListViewItem x:Name="Greyavrage" Content="Grey Avrage" Margin="0" FontSize="48" HorizontalContentAlignment="Center"/>
+					<ListViewItem x:Name="Greynatural" Content="Grey Natural" Margin="0" FontSize="48" HorizontalContentAlignment="Center"/>
+					<ListViewItem x:Name="Negativ" Content="Negative" Margin="0" FontSize="48" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>
+					<ListViewItem x:Name="sepia" Content="Sepia" Margin="0" FontSize="48" HorizontalContentAlignment="Center"/>
+				</ListView>
+				<Slider x:Name="wagasepia" Grid.Row="1" Minimum="20" Maximum="40" FontSize="48" />
+			</Grid>
+		</Flyout>
+		<Flyout x:Key="nosiekinde" Placement="Full">
+			<Grid>
+				<RadioButton Content="RadioButton" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+				<RadioButton Content="RadioButton" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+			</Grid>
+		</Flyout>
 	</Page.Resources>
 	<Page.Background>
 		<ImageBrush ImageSource="ms-appx:/tło3.jpg" Stretch="Fill"/>
@@ -68,7 +96,7 @@
 				<RowDefinition Height="Auto" MinHeight="100"/>
 			</Grid.RowDefinitions>
 			<Button x:Name="Aply" Content="Aply" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="#FF07497D" FontSize="64" Click="_try_Click"/>
-			<Button x:Name="OK" Content="OK" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Grid.Row="2" Background="#FF07497D" FontSize="64"/>
+			<Button x:Name="OK" Content="OK" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Grid.Row="2" Background="#FF07497D" FontSize="64" Click="OK_Click"/>
 			<TextBlock x:Name="info" TextWrapping="Wrap" Text="TextBlock" Grid.Row="1"/>
 		</Grid>
 		<Grid Grid.Row="1" Margin="0,50,0,0">
@@ -76,7 +104,8 @@
 				<RowDefinition Height="Auto" MinHeight="100"/>
 				<RowDefinition Height="Auto" MinHeight="100"/>
 			</Grid.RowDefinitions>
-			<Button x:Name="noise" Content="Noise Generator" Margin="0,0,0,62" Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" FontSize="48" FontWeight="Bold" Flyout="{StaticResource FlyoutBase2}" />
+			<Button x:Name="noise" Content="Noise Generator" Margin="0,0,0,62" Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" FontSize="48" FontWeight="Bold" Flyout="{StaticResource nosiekinde}"  />
+			<Button x:Name="color" Content="Color Enchancment" HorizontalAlignment="Stretch" Margin="0" VerticalAlignment="Stretch" FontSize="48" FontWeight="Bold" Flyout="{StaticResource coloroperation}"/>
 		</Grid>
 		<Grid Grid.Row="1" Grid.Column="1">
 			<Grid.RowDefinitions>

@@ -12,6 +12,7 @@ namespace lab01biometria.imageoperation
         {
             image.Accept(this);
         }
+        public void rob(image_as_tab image) { }
         public void Visit(image_RGB rgb) {
 
             //zmiana na grey jak beda funckje

@@ -13,6 +13,7 @@ namespace lab01biometria.imageoperation
         {
             this.local = local;
         }
+        public void rob(image_as_tab image) { }
         public void BinaryLocalMeanAll(image_as_tab image)
         {
             image.Accept(this);

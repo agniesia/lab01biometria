@@ -19,6 +19,7 @@ namespace lab01biometria.imageoperation
             this.scale=scale;
 
         }
+        public void rob(image_as_tab image) { }
         public void ScalebilinearAll(image_as_tab image)
         {
             image.Accept(this);
