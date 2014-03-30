@@ -76,7 +76,7 @@ namespace lab01biometria
                      // Dekoder będzie potrzebny później przy pracy na obrazie
                     BitmapImage bitmapImage = new BitmapImage(); // Stworzenie obiektu obrazu do wyświetlenia
                     bitmapImage.SetSource(fileStream); // Przepisanie obrazu ze strumienia do obiektu obrazu przez wartosc
-                    this.obrazek.Source = bitmapImage; // Przypisanie obiektu obrazu do elementu interfejsu typu "Image" o nazwie "Oryginał"
+                    this.Show.Source = bitmapImage; // Przypisanie obiektu obrazu do elementu interfejsu typu "Image" o nazwie "Oryginał"
                     // Poniżej znajduje się zapamiętanie dekodera
                     w=bitmapImage.PixelWidth;
                     h=bitmapImage.PixelHeight;
@@ -140,24 +140,27 @@ namespace lab01biometria
             {
                 await stream.WriteAsync(obiekt.show(), 0, obiekt.show().Length);
             }
-            this.im_effect.Source = writeableBitmap;
+            this.change.Source = writeableBitmap;
         }
 
         private void _try_Click(object sender, RoutedEventArgs e)
+
         {
-            imagetowork= new Binary(imagetowork.utab,imagetowork.w,imagetowork.h);
-            //Originator org = new Originator();
-            //Caretaker caretaker = new Caretaker();
+            
+            
+            imagetowork = new Binary(imagetowork.utab, imagetowork.w, imagetowork.h);
+            Originator org = new Originator();
+            Caretaker caretaker = new Caretaker();
 
-            //org.State = imagetowork;
-            //caretaker.Memento = org.SaveMemento();
+            org.State = imagetowork;
+            caretaker.Memento = org.SaveMemento();
 
-            //imageoperation.Negative operatio = new imageoperation.Negative();
-            //operatio.NegativeAll(imagetowork);
+            imageoperation.Negative operatio = new imageoperation.Negative();
+            operatio.NegativeAll(imagetowork);
             bitmpe(imagetowork);
 
-            //org.RestoreMemento(caretaker.Memento);
-            //imagetowork = org.State;
+            org.RestoreMemento(caretaker.Memento);
+            imagetowork = org.State;
 
             
            
@@ -346,7 +349,7 @@ namespace lab01biometria
             operatio.NegativeAll(imagetowork);
             bitmpe(imagetowork);
             //SwitchEvent();
-
+          
             
 
 
@@ -355,70 +358,15 @@ namespace lab01biometria
                 
         }
 
-        private void sepia_GotFocus(object sender, RoutedEventArgs e)
-        {
-            
-        }
+        
 
-        private void natural_grey_GotFocus(object sender, RoutedEventArgs e)
-        {
-            Event = 2;
-        }
+       
+        
+       
 
-        private void normalize_GotFocus(object sender, RoutedEventArgs e)
-        {
-            Event = 3;
-        }
+        
 
-        private void grey_GotFocus(object sender, RoutedEventArgs e)
-        {
-            Event = 4;
-        }
-
-        private void negative_GotFocus(object sender, RoutedEventArgs e)
-        {
-            Event = 5;
-        }
-
-        private void roberts_GotFocus(object sender, RoutedEventArgs e)
-        {
-            Event = 6;
-        }
-
-        private void sobel_GotFocus(object sender, RoutedEventArgs e)
-        {
-            Event = 7;
-        }
-
-        private void AppBar_Opened(object sender, object e)
-        {
-            if (!histapp.IsEnabled)
-            {
-                if (histapp.IsOpen)
-                    histapp.IsOpen = false;
-            }
-        }
-
-        private void buttonhist_Click(object sender, RoutedEventArgs e)
-        {
-            
-            //if (kolor != null)
-            //{
-                
-            //    //bitmpe(hist.utab, hist);
-            //}
-            //else if (szary != null)
-            //{
-            //    //var hist = szary.histogram();
-            //    //bitmpe(hist.utab, hist);
-            //}
-        }
-
-        private void sepia40_GotFocus(object sender, RoutedEventArgs e)
-        {
-            Event = 8;
-        }
-
+       
         
         }
     
