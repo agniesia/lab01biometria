@@ -17,7 +17,10 @@ namespace lab01biometria.imageoperation
         {
             image.Accept(this);
         }
-        public void rob(image_as_tab image) { }
+        public void rob(image_as_tab image) {
+            MedianFilterAll(image);
+
+        }
         public void Visit(image_Gray Grey){
 
             int[,] TempGrey = new int[Grey.w, Grey.h];
@@ -66,9 +69,9 @@ namespace lab01biometria.imageoperation
              List<byte> medianaG = new List<byte>();
              List<byte> medianaB = new List<byte>();
              byte start = (byte)(local / 2);
-             for (int x = start; x < rgb.w - start; x++)
+             for (int x = start+1; x < rgb.w - start; x++)
              {
-                 for (int y = start; y < rgb.h - start; y++)
+                 for (int y = start+1; y < rgb.h - start; y++)
                  {
 
 

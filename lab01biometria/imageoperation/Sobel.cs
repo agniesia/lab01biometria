@@ -24,7 +24,9 @@ namespace lab01biometria.imageoperation
         {
             image.Accept(this);
         }
-        public void rob(image_as_tab image) { }
+        public void rob(image_as_tab image) {
+            SobelAll(image);
+        }
         public void Visit(image_RGB rgb)
         {
             int[,] TempR = new int[rgb.w, rgb.h];

@@ -9,6 +9,7 @@ namespace lab01biometria.imageoperation
     class Sepia:Visitor
     {
         int Waga;
+        image_RGB rgb=null;
         public Sepia(int Waga){
             this.Waga = Waga;
         }
@@ -16,7 +17,10 @@ namespace lab01biometria.imageoperation
         {
             image.Accept(this);
         }
-        public void rob(image_as_tab image) { }
+        public void rob(image_as_tab image) {
+            SepiaAll(image);
+            
+        }
         public void Visit(image_RGB rgb)
         {
 
@@ -42,6 +46,29 @@ namespace lab01biometria.imageoperation
             }
 
         }
-        public void Visit(image_Gray Grey) { }
+        public void Visit(image_Gray Grey) {
+            rgb = new image_RGB();
+            byte[] temp = new byte[rgb.w * rgb.h * 4];
+
+            for (int i = 0; i < rgb.w; i++)
+            {
+                for (int j = 0; j < rgb.h; j++)
+                {
+                    //R=R+2*W, G=G+W, B=B
+
+                    if (Grey.Greycanal[i][j] + Waga <= 255)
+                        rgb.G[i][j] = (byte)(Grey.Greycanal[i][j] + Waga);
+                    else
+                        rgb.G[i][j] = 255;
+                    if (Grey.Greycanal[i][j] + 2 * Waga <= 255)
+                        rgb.R[i][j] = (byte)(Grey.Greycanal[i][j] + 2 * Waga);
+                    else
+                        rgb.R[i][j] = 255;
+
+                }
+
+            }
+            
+        }
     }
 }

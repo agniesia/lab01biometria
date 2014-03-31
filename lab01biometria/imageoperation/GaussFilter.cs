@@ -12,19 +12,22 @@ namespace lab01biometria.imageoperation
         double Sigma;
         
         public double[,] ElemMaski;
-        public byte Rozmiar;
+        public int Rozmiar;
         public int Norma;
         public void rob(image_as_tab image) { }
-        public GaussFilter(byte rozmiar, double sigma)
+        public GaussFilter(int rozmiar, double sigma)
         {
             this.Rozmiar = rozmiar;
             this.Sigma = sigma;
+            ElemMaski = new double[Rozmiar, Rozmiar];
+            Norma = 1;
             for (int i = 0; i < rozmiar; i++)
             {
                 for (int j = 0; j < rozmiar; j++)
                 {
 
                     ElemMaski[i, j] = 1/(2*Math.PI*Sigma*Sigma)*Math.Exp(-(i*i+j*j)/(2*Sigma*Sigma));
+                    
                 }
             }
 

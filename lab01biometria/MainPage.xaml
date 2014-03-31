@@ -34,8 +34,84 @@
 		</Flyout>
 		<Flyout x:Key="nosiekinde" Placement="Full">
 			<Grid>
-				<RadioButton Content="RadioButton" HorizontalAlignment="Left" VerticalAlignment="Top"/>
-				<RadioButton Content="RadioButton" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+				<Grid.RowDefinitions>
+					<RowDefinition Height="Auto"/>
+					<RowDefinition Height="Auto"/>
+					<RowDefinition Height="Auto"/>
+					<RowDefinition Height="Auto"/>
+				</Grid.RowDefinitions>
+				<ListView x:Name="noiselista" Margin="0" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch">
+					<ListViewItem x:Name="Paper_Salt" Content="Peper&amp;Salt" Margin="0" FontSize="48"/>
+					<ListViewItem x:Name="rownomierny" Content="Uniform One &#xD;&#xA;Canal Noise" Margin="0" FontSize="48"/>
+					<ListViewItem x:Name="diffrownomierny" Content="Uniform Differ&#xD;&#xA; Canal Noise" Margin="0" FontSize="48"/>
+				</ListView>
+				<Slider x:Name="power" Grid.Row="1" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch"/>
+				<Slider x:Name="Intensity" Grid.Row="2"/>
+				<Button x:Name="noiseok" Content="OK" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Grid.Row="5" FontSize="48" Click="noise_Click"/>
+			</Grid>
+		</Flyout>
+		<Flyout x:Key="resizeflyout" Placement="Full">
+			<Grid/>
+		</Flyout>
+		<Flyout x:Key="button" Placement="Full">
+			<Grid Height="100" Width="100"/>
+		</Flyout>
+		<Flyout x:Key="Sharpen" Placement="Full">
+			<Grid>
+				<Grid.RowDefinitions>
+					<RowDefinition Height="Auto"/>
+					<RowDefinition Height="Auto"/>
+					<RowDefinition Height="Auto"/>
+				</Grid.RowDefinitions>
+			</Grid>
+		</Flyout>
+		<Flyout x:Key="Edgedetectionflyout" Placement="Full">
+			<Grid>
+				<Grid.RowDefinitions>
+					<RowDefinition Height="Auto"/>
+					<RowDefinition Height="Auto"/>
+					<RowDefinition Height="Auto"/>
+				</Grid.RowDefinitions>
+				<Button x:Name="okeadgetetction" Content="OK" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"  Grid.Row="1" FontSize="48"/>
+				<ListView x:Name="edgelist" Margin="0">
+					<ListViewItem x:Name="sobelitem" Content="Roberts Filter" Margin="0" FontSize="48"/>
+					<ListViewItem x:Name="roberts_item" Content="Sobel Filter" Margin="0" FontSize="48"/>
+				</ListView>
+			</Grid>
+		</Flyout>
+		<Flyout x:Name="advence" x:Key="Sharpenflyout" Placement="Full">
+			<Grid>
+				<Grid.RowDefinitions>
+					<RowDefinition Height="Auto"/>
+					<RowDefinition Height="Auto"/>
+					<RowDefinition Height="Auto"/>
+					<RowDefinition Height="Auto"/>
+					<RowDefinition Height="Auto"/>
+					<RowDefinition Height="Auto"/>
+				</Grid.RowDefinitions>
+				<ListView x:Name="filterslist" Margin="0" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch">
+					<ListViewItem x:Name="medianfilter" Content="Median Filter" Margin="0" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" FontSize="48"/>
+					<ListViewItem x:Name="betermeduian" Content="Better Median Filter" Margin="0" FontSize="48"/>
+					<ListViewItem x:Name="kuwaharafilter" Content="Kuwahara  Filter" Margin="0" FontSize="48"/>
+					<ListViewItem x:Name="GausianFilter" Content="Gaussian Filter" Margin="0" FontSize="48"/>
+				</ListView>
+				<Slider x:Name="rozmiarfilter" Grid.Row="2" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Height="60" VerticalAlignment="Bottom"/>
+				<Slider x:Name="sigma" Grid.Row="4" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch"/>
+				<Button x:Name="okfilter" Content="OK" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Grid.Row="5" Click="okfilter_Click" FontSize="48"/>
+				<TextBox x:Name="ssigma" HorizontalAlignment="Center" TextWrapping="Wrap" Text="Sigma" VerticalAlignment="Center" Grid.Row="3" FontSize="24"/>
+				<TextBox x:Name="srozmiar" Margin="0" Grid.Row="1" TextWrapping="Wrap" Text="Rozmiar" Padding="0" FontSize="24" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+			</Grid>
+		</Flyout>
+		<Flyout x:Key="filtersflyout">
+			<Grid Height="240" Width="420" UseLayoutRounding="False" HorizontalAlignment="Center" VerticalAlignment="Center">
+				<Grid.RowDefinitions>
+					<RowDefinition Height="Auto"/>
+					<RowDefinition Height="Auto"/>
+					<RowDefinition Height="Auto"/>
+				</Grid.RowDefinitions>
+				<Button x:Name="advance" Content="Advance" HorizontalAlignment="Stretch" Margin="0" Grid.Row="2" VerticalAlignment="Stretch" FontSize="48" HorizontalContentAlignment="Left" Flyout="{StaticResource Sharpenflyout}"/>
+				<Button x:Name="egdedetection" Content="Egde Detection" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Grid.Row="1" FontSize="48" HorizontalContentAlignment="Left" Flyout="{StaticResource Edgedetectionflyout}"/>
+				<Button x:Name="smoothsharpen" Content="Smooth&amp;Sharpen" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" FontSize="48" HorizontalContentAlignment="Left" Flyout="{StaticResource Sharpen}"/>
 			</Grid>
 		</Flyout>
 	</Page.Resources>
@@ -97,14 +173,14 @@
 			</Grid.RowDefinitions>
 			<Button x:Name="Aply" Content="Aply" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="#FF07497D" FontSize="64" Click="_try_Click"/>
 			<Button x:Name="OK" Content="OK" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Grid.Row="2" Background="#FF07497D" FontSize="64" Click="OK_Click"/>
-			<TextBlock x:Name="info" TextWrapping="Wrap" Text="TextBlock" Grid.Row="1"/>
+            <TextBlock x:Name="info"   Text="info.."  FontSize="16" FontWeight="Bold" Grid.Row="1" Foreground="#FF191717" />
 		</Grid>
 		<Grid Grid.Row="1" Margin="0,50,0,0">
 			<Grid.RowDefinitions>
 				<RowDefinition Height="Auto" MinHeight="100"/>
 				<RowDefinition Height="Auto" MinHeight="100"/>
 			</Grid.RowDefinitions>
-			<Button x:Name="noise" Content="Noise Generator" Margin="0,0,0,62" Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" FontSize="48" FontWeight="Bold" Flyout="{StaticResource nosiekinde}"  />
+			<Button x:Name="noise" Content="Noise Generator" Margin="0,0,0,62" Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" FontSize="48" FontWeight="Bold" Flyout="{StaticResource nosiekinde}" />
 			<Button x:Name="color" Content="Color Enchancment" HorizontalAlignment="Stretch" Margin="0" VerticalAlignment="Stretch" FontSize="48" FontWeight="Bold" Flyout="{StaticResource coloroperation}"/>
 		</Grid>
 		<Grid Grid.Row="1" Grid.Column="1">
@@ -112,14 +188,14 @@
 				<RowDefinition Height="Auto" MinHeight="100"/>
 				<RowDefinition Height="Auto" MinHeight="100"/>
 			</Grid.RowDefinitions>
-			<Button x:Name="resize" Content="Resize" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" FontSize="48" FontWeight="Bold" Grid.Row="1"/>
+			<Button x:Name="resize" Content="Resize" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" FontSize="48" FontWeight="Bold" Grid.Row="1" Flyout="{StaticResource resizeflyout}"/>
 		</Grid>
 		<Grid x:Name="last" Grid.Row="2" Grid.Column="2" Margin="0,50,0,0">
 			<Grid.RowDefinitions>
 				<RowDefinition Height="Auto"/>
 				<RowDefinition Height="Auto"/>
 			</Grid.RowDefinitions>
-			<Button x:Name="filters" Content="Filters" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" FontSize="48" FontWeight="Bold"/>
+			<Button x:Name="filters" Content="Filters" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" FontSize="48" FontWeight="Bold" Flyout="{StaticResource filtersflyout}"/>
 			<Button x:Name="binaryzation" Content="Binaryzation" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Grid.Row="1" FontSize="48" FontWeight="Bold"/>
 		</Grid>
 	</Grid>

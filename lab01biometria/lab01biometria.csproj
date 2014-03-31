@@ -143,13 +143,14 @@
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="imageoperation\Maska.cs" />
-    <Compile Include="imageoperation\Normalize.cs" />
+    <Compile Include="imageoperation\NormalizeImage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="obrazy\RGB.cs" />
     <Compile Include="second.xaml.cs">
       <DependentUpon>second.xaml</DependentUpon>
     </Compile>
     <Compile Include="SingleImage.cs" />
+    <Compile Include="Visitor.cs" />
   </ItemGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest">

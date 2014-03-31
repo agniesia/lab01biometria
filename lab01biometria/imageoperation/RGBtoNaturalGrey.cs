@@ -8,12 +8,15 @@ namespace lab01biometria.imageoperation
 {
     class RGBtoNaturalGrey:Visitor
     {
-        image_Gray GreyElement;
+        public image_Gray GreyElement;
         public void RGBtoNaturalGreyAll(image_as_tab image)
         {
             image.Accept(this);
         }
-        public void rob(image_as_tab image) { }
+        public void rob(image_as_tab image) {
+            RGBtoNaturalGreyAll(image);
+           
+        }
         public void Visit(image_RGB rgb)
         {
             byte z;

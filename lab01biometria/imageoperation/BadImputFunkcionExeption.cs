@@ -8,4 +8,5 @@ namespace lab01biometria.imageoperation
     class BadImputFunkcionExeption : Exception
     {
     }
+    
 }

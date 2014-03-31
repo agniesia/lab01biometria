@@ -17,7 +17,10 @@ namespace lab01biometria.imageoperation
         {
             image.Accept(this);
         }
-        public void rob(image_as_tab image) { }
+        public void rob(image_as_tab image) {
+            MedianFilterBetterAll(image);
+
+        }
         public void Visit(image_Gray Grey){
 
             int[,] TempGrey = new int[Grey.w, Grey.h];
@@ -68,11 +71,12 @@ namespace lab01biometria.imageoperation
              int[,] TempR = new int[rgb.w, rgb.h];
              int[,] TempG = new int[rgb.w, rgb.h];
              int[,] TempB = new int[rgb.w, rgb.h];
-             List<byte> medianaR = new List<byte>();
-             List<byte> medianaG = new List<byte>();
-             List<byte> medianaB = new List<byte>();
+             List<byte> medianaR = new List<byte>(100);
+             List<byte> medianaG = new List<byte>(100);
+             List<byte> medianaB = new List<byte>(100);
              byte start = (byte)(local / 2);
-             for (int x = start; x < rgb.w - start; x++)
+             
+             for (int x = start ; x < rgb.w - start; x++)
              {
                  for (int y = start; y < rgb.h - start; y++)
                  {
@@ -83,9 +87,9 @@ namespace lab01biometria.imageoperation
                      {
                          for (int j = 0; j < local; j++)
                          {
-                             medianaR.Add(rgb.R[x + i - 1][y + j - 1]);
-                             medianaG.Add(rgb.G[x + i - 1][y + j - 1]);
-                             medianaB.Add(rgb.B[x + i - 1][y + j - 1]);
+                             medianaR.Add(rgb.R[x + i - start][y + j - start]);
+                             medianaG.Add(rgb.G[x + i - start][y + j - start]);
+                             medianaB.Add(rgb.B[x + i - start][y + j - start]);
 
                          }
                      }

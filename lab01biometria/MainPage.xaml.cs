@@ -50,12 +50,14 @@ namespace lab01biometria
         
         byte[] sourcePixels;
         BitmapDecoder decoder;
-        byte Event = 0;
+        
         int w = 0;
         int h = 0;
-       
+        Visitor operatio;
+        imageoperation.RGBtoGrey x;
+        imageoperation.RGBtoNaturalGrey y;
         image_as_tab imagetowork;
-        static Type type;
+        
 
         private async void wczytajimage(object sender, RoutedEventArgs e)
         {
@@ -151,15 +153,37 @@ namespace lab01biometria
         {
             
             
-            imagetowork = new Binary(imagetowork.utab, imagetowork.w, imagetowork.h);
+            
             Originator org = new Originator();
             Caretaker caretaker = new Caretaker();
 
             org.State = imagetowork;
             caretaker.Memento = org.SaveMemento();
 
-            imageoperation.Negative operatio = new imageoperation.Negative();
-           // operatio.NegativeAll(imagetowork);
+
+            if (operatio.GetType() == grey.GetType())
+            {
+                grey.rob(imagetowork);
+                imagetowork = grey.GreyElement.copy();
+            }
+
+            else if (operatio.GetType() == greyn.GetType())
+            {
+                greyn.rob(imagetowork);
+                imagetowork = greyn.GreyElement.copy();
+            }
+            else
+                operatio.rob(imagetowork);
+             
+                
+            
+                
+           
+            
+                
+            
+
+            
             bitmpe(imagetowork);
 
             org.RestoreMemento(caretaker.Memento);
@@ -344,15 +368,30 @@ namespace lab01biometria
             ////sourcePixels =(byte[]) a.utab.Clone();
             ////this.obrazek.Source = this.im_effect.Source;
         }
-        Visitor operatio;
+        imageoperation.RGBtoGrey grey = new imageoperation.RGBtoGrey();
+        imageoperation.RGBtoNaturalGrey greyn = new imageoperation.RGBtoNaturalGrey();
         private void OK_Click(object sender, RoutedEventArgs e)
         {
 
+
+            if (operatio.GetType() == grey.GetType())
+            {
+                grey.rob(imagetowork);
+                imagetowork = grey.GreyElement.copy();
+            }
+
+            else if (operatio.GetType() == greyn.GetType())
+            {
+                greyn.rob(imagetowork);
+                imagetowork = greyn.GreyElement.copy();
+            }
+            else
+                operatio.rob(imagetowork);
+                
             
-            
-            operatio.rob(imagetowork);
+
             bitmpe(imagetowork);
-            //SwitchEvent();
+            Show.Source = change.Source;
           
             
 
@@ -371,13 +410,15 @@ namespace lab01biometria
             switch (a)
             {
                 case 0:
-                    operatio = new imageoperation.Negative();
+                    operatio = new imageoperation.NormalizeImage();
                     break;
                 case 1:
+                     
                     operatio = new imageoperation.RGBtoGrey();
+                   
                     break;
                 case 2:
-                    operatio = new imageoperation.RGBtoNaturalGrey();
+                    operatio= new imageoperation.RGBtoNaturalGrey();
                     break;
                 case 3:
                     operatio = new imageoperation.Negative();
@@ -387,11 +428,81 @@ namespace lab01biometria
                     operatio = new imageoperation.Sepia(waga);
                     break;
             }
-           
-            
+
+            docoloroperation.SelectedIndex = -1;
             color.Flyout.Hide();
             
         }
+
+        private void noise_Click(object sender, RoutedEventArgs e)
+        {
+            int a = noiselista.SelectedIndex;
+            int chance =(int) power.Value;
+            switch (a)
+            {
+                case 0:
+                    operatio = new imageoperation.NoiseGeneratorSaltPeper(chance);
+                    break;
+                case 1:
+                    operatio = new imageoperation.NoiseGeneratorUniformOneCalanl(chance,10 ,30);
+                    break;
+                case 2:
+                    operatio = new imageoperation.NoiseGeneratorUniformDiffCanal(chance, 10, 30);
+                    break;
+            }
+
+            noiselista.SelectedIndex = -1;
+            noise.Flyout.Hide();
+        }
+
+        private void okeadgetetction_Click(object sender, RoutedEventArgs e)
+        {
+            int a = edgelist.SelectedIndex;
+            switch(a){
+                case 0:
+                    operatio = new imageoperation.Roberts();
+                    break;
+                case 1:
+                    operatio = new imageoperation.Sobel();
+                    break;
+
+            }
+            egdedetection.Flyout.Hide();
+            edgelist.SelectedIndex = -1;
+        }
+
+        private void okfilter_Click(object sender, RoutedEventArgs e)
+        {
+            var a=filterslist.SelectedIndex;
+            var Sigma = sigma.Value;
+            var Rozm =(int) rozmiarfilter.Value;
+            switch (a)
+            {
+                case 0:
+                    operatio = new imageoperation.MedianFilter(Rozm);
+                    break;
+                case 1:
+                    operatio = new imageoperation.MedianFilterBetter(Rozm);
+                    break;
+                case 2:
+                    operatio = new imageoperation.KuwaharaFilter(Rozm);
+                    break;
+                case 3:
+                    operatio = new imageoperation.GaussFilter(Rozm, Sigma);
+                    break;
+            }
+
+                advence.Hide();
+
+               filterslist.SelectedIndex = -1;
+
+
+
+
+
+            }
+
+        
 
         
 

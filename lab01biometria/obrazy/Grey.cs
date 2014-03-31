@@ -38,6 +38,10 @@ namespace lab01biometria
         {
             visitor.Visit(this);
         }
+        public override image_Gray greyimage()
+        {
+            return this;
+        }
         public override image_as_tab copy()
         {
             image_Gray temp = new image_Gray();
@@ -50,12 +54,26 @@ namespace lab01biometria
         }
         public override byte[] show()
         {
-            return this.utab;
+            byte[] temp = new byte[w * h * 4];
+            for (int j = 0; j < h; j++)
+            {
+                for (int i = 0; i < w; i++)
+                {
+
+                    temp[4 * (j * w + i)] = this.Greycanal[i][j];
+                    temp[4 * (j * w + i) + 1] = this.Greycanal[i][j];
+                    temp[4 * (j * w + i) + 2] = this.Greycanal[i][j];
+                    temp[4 * (j * w + i) + 3] = alfa[i][j];
+
+
+                }
+            }
+            return temp;
         }
-        //public static explicit operator image_Gray(image_RGB rgb)
+        //public static explicit operator image_RGB(image_Gray rgb)
         //{
         //    // trzeba zrobic coś z akt
-        //    image_Gray temp = new image_Gray(rgb.utab, rgb.w, rgb.h);
+        //    image_Gray temp = new image_Gray(rgb.imagearray3Dto1D(), rgb.w, rgb.h);
 
 
         //    return temp;

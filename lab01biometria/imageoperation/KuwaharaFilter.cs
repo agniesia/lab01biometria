@@ -13,12 +13,17 @@ namespace lab01biometria.imageoperation
         public KuwaharaFilter(int Rozmiar=5){
             this.Rozmiar=Rozmiar;
         }
-        public void rob(image_as_tab image) { }
+        public void rob(image_as_tab image) {
+
+            KuwaharaFilterAll(image);
+        }
         public void KuwaharaFilterAll(image_as_tab image)
         {
             image.Accept(this);
         }
-        public void Visit(image_RGB rgb) { }
+        public void Visit(image_RGB rgb) {
+          
+        }
         public void Visit(image_Gray Grey)
         {
             int[,] TempGrey = new int[Grey.w, Grey.h];
