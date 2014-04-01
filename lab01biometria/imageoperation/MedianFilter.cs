@@ -80,9 +80,9 @@ namespace lab01biometria.imageoperation
                      {
                          for (int j = 0; j < local; j++)
                          {
-                             medianaR.Add(rgb.R[x + i - 1][y + j - 1]);
-                             medianaG.Add(rgb.G[x + i - 1][y + j - 1]);
-                             medianaB.Add(rgb.B[x + i - 1][y + j - 1]);
+                             medianaR.Add(rgb.R[x + i - start][y + j - start]);
+                             medianaG.Add(rgb.G[x + i - start][y + j - start]);
+                             medianaB.Add(rgb.B[x + i - start][y + j - start]);
 
                          }
                      }

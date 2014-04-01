@@ -9,15 +9,20 @@ namespace lab01biometria.imageoperation
     class Bernsen:Visitor
     {
         int local;
-        public Bernsen(int local)
+        int sigma;
+        public Bernsen(int local, int sigma)
         {
             this.local = local;
+            this.sigma = sigma;
         }
         public void BernsenAll(image_as_tab image)
         {
             image.Accept(this);
         }
-        public void rob(image_as_tab image) { }
+        public void rob(image_as_tab image) {
+            BernsenAll(image);
+
+        }
         public void Visit(image_RGB rgb) {
             //szry obrazek
             RGBtoGrey v = new RGBtoGrey();
@@ -27,15 +32,16 @@ namespace lab01biometria.imageoperation
             Visit(Grey);
         }
         public void Visit(image_Gray Grey) {
-            byte zero = 0, one = 1;
+            byte zero = 0, one = 255;
             var globalmean = Grey.utab.Sum(x => x) / Grey.utab.Length;
-            byte epsilon = 1;
+          
             var Suma = 0;
+            int range = (int)local / 2;
             byte[][] Temp = new byte[Grey.w][];
-            for (int x = 1; x < Grey.w - 1; x++)
+            for (int x = range; x < Grey.w - range; x++)
             {
                 Temp[x] = new byte[Grey.h];
-                for (int y = 1; y < Grey.h - 1; y++)
+                for (int y = range; y < Grey.h - range; y++)
                 {
                     Suma = 0;
                     byte[] temp = new byte[local * local];
@@ -44,7 +50,7 @@ namespace lab01biometria.imageoperation
 
                         for (int j = 0; j < local; j++)
                         {
-                            temp[i] = Grey.Greycanal[x + i - 1][y + j - 1];
+                            temp[i] = Grey.Greycanal[x + i - range][y + j - range];
 
                         }
 
@@ -55,7 +61,7 @@ namespace lab01biometria.imageoperation
                     var level = (TempMax + TempMin) / 2;
 
 
-                    if ((TempMax - TempMax) < epsilon)
+                    if ((TempMax - TempMax) <sigma )
                     {
                         Temp[x][y] = Grey.Greycanal[x][y] >= globalmean ? one : zero;
                     }
@@ -64,7 +70,12 @@ namespace lab01biometria.imageoperation
                         Temp[x][y] = Grey.Greycanal[x][y] >= level ? one : zero;
                 }
             }
-            //Grey.Greycanal = (byte[][])Temp.Clone();
+            for (int x = range; x < Grey.w - range; x++)
+            {
+
+                for (int y = range; y < Grey.h - range; y++)
+                    Grey.Greycanal[x][y] = (byte)Temp[x][y];
+            }
 
         }
     }

@@ -7,8 +7,10 @@ using System.Threading.Tasks;
 namespace lab01biometria
 {
     class image_Gray : image_as_tab
+
     {
         public byte[][] Greycanal;
+        
         public byte[][] alfa;
         public image_Gray() : base() { }
 

@@ -63,8 +63,8 @@ namespace lab01biometria.imageoperation
                     var minimask=start*start;
                     Sr1=maska1.Sum()/minimask;
                     Sr2=maska2.Sum()/ minimask;
-                    Sr3/=maska3.Sum()/minimask;
-                    Sr4/=maska4.Sum()/minimask;
+                    Sr3=maska3.Sum()/minimask;
+                    Sr4=maska4.Sum()/minimask;
                     double variancja1=0;
                     double variancja2=0;
                     double variancja3=0;

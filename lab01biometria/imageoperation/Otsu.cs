@@ -12,7 +12,9 @@ namespace lab01biometria.imageoperation
         {
             image.Accept(this);
         }
-        public void rob(image_as_tab image) { }
+        public void rob(image_as_tab image) {
+            OtsuAll(image);
+        }
         public void Visit(image_RGB rgb) {
 
             //zmiana na grey jak beda funckje
@@ -30,25 +32,28 @@ namespace lab01biometria.imageoperation
             int[] Hist = new int[256];
             for (int k = 0; k < 256; k++)
             {
-                Hist[k] = Grey.utab.Where((x, i) => i % 4 == 0 && x == k).ToArray().Length;
+                Hist[k] = Grey.Greycanal.AsParallel().SelectMany(t=>t).ToArray().AsParallel().Where((x, i) => i % 4 == 0 && x == k).ToArray().Length;
             }
+            var maxi = Hist.Max();
+            //Hist = Hist.AsParallel().Select(x => x = x / maxi).ToArray();
             var suma = 0;
-            byte one = 1;
+            byte one = 255;
             byte zero = 0;
             var total = Grey.w * Grey.h;
-            for (int k = 0; k < 256; k++)
+            for (int k = 1; k < 256; k++)
             {
                 suma += Hist[k] * k;
             }
-            var sumB = 0;
-            var wB = 0;
-            var wF = 0;
-            var mB=0;
-            var mF=0;
-            var max = 0.0;
-            var between = 0.0;
-            var threshold1 = 0.0;
-            var threshold2 = 0.0;
+
+            double sumB = 0;
+            double wB = 0;
+            double wF = 0;
+            double mB = 0;
+            double mF = 0;
+            double max = 0.0;
+            double between = 0.0;
+            double threshold1 = 0.0;
+            double threshold2 = 0.0;
             for (var i = 0; i < 256; ++i) {
                 wB += Hist[i];
                 if (wB == 0)
@@ -69,7 +74,12 @@ namespace lab01biometria.imageoperation
                 }
             }
             var progowanie= ( threshold1 + threshold2 ) / 2.0;
-            Grey.utab = Grey.utab.Select(x => x >= progowanie ? one : zero).ToArray();
+            for (int x = 0; x < Grey.w ; x++)
+            {
+
+                for (int y = 0; y < Grey.h; y++)
+                    Grey.Greycanal[x][y] = Grey.Greycanal[x][y] <= progowanie ? one : zero;
+            }
             //copis na 2 D binary
         
         

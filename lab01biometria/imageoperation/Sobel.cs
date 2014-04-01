@@ -96,7 +96,56 @@ namespace lab01biometria.imageoperation
 
             }
         }
-        public void Visit(image_Gray Grey) { }
+        public void Visit(image_Gray Grey) {
+            int[,] Temp = new int[Grey.w, Grey.h];
+            
+            for (int x = 1; x < Grey.w - 1; x++)
+            {
+                for (int y = 1; y < Grey.h - 1; y++)
+                {
+                    int Suma = 0;
+                   
+
+                    int Suma1 = 0;
+                    
+
+                    for (int i = 0; i < Rozmiar; i++)
+                    {
+                        for (int j = 0; j < Rozmiar; j++)
+                        {
+                            Suma += Grey.Greycanal[x + i - 1][y + j - 1] * ElemMaski[i, j];
+                           
+                            Suma1 += Grey.Greycanal[x + i - 1][y + j - 1] * ElemMaski1[i, j];
+                          
+
+                        }
+                    }
+                    
+
+
+                    double t = (Math.Sqrt(Math.Pow(Suma, 2) + Math.Pow(Suma1, 2)));
+                   
+                    if (t> 255)
+                        t = 255;
+                    
+                    if (t< 0)
+                        t = 0;
+                   
+                    Temp[x, y] = (byte)t;
+                   
+                }
+            }
+            for (int c = 0; c < Grey.w; c++)
+            {
+                for (int p = 0; p < Grey.h; p++)
+                {
+                    Grey.Greycanal[c][p] = (byte)Temp[c, p];
+                    
+                }
+
+
+            }
+        }
 
 
 

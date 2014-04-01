@@ -56,13 +56,25 @@
 		<Flyout x:Key="button" Placement="Full">
 			<Grid Height="100" Width="100"/>
 		</Flyout>
-		<Flyout x:Key="Sharpen" Placement="Full">
+		<Flyout x:Name="sharpenflyout" x:Key="Sharpen" Placement="Full">
 			<Grid>
 				<Grid.RowDefinitions>
 					<RowDefinition Height="Auto"/>
 					<RowDefinition Height="Auto"/>
 					<RowDefinition Height="Auto"/>
+					<RowDefinition Height="Auto"/>
 				</Grid.RowDefinitions>
+				<Button x:Name="oksharpen" Content="OK" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Grid.Row="3" FontSize="48" Click="oksharpen_Click"/>
+				<Slider x:Name="rozmmaski" Grid.Row="2" LargeChange="1" Maximum="21" Minimum="3" StepFrequency="2" Value="3"/>
+				<ListView Name="Listasharpensmooth" Margin="0">
+					<ListViewItem x:Name="Sharpen1" Content="Sharpen I" Margin="0" FontSize="48" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
+					<ListViewItem x:Name="sharpen2" Content="Sharpen II" Margin="0" FontSize="48" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
+					<ListViewItem x:Name="Sharpen3" Content="Sharpen III" Margin="0" FontSize="48" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
+					<ListViewItem x:Name="smooth1" Content="Smooth I" Margin="0" FontSize="48" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
+					<ListViewItem x:Name="smooth2" Content="Smooth II" Margin="0" FontSize="48" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
+					<ListViewItem x:Name="smooth3" Content="Smooth dynamic" Margin="0" FontSize="48" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
+				</ListView>
+				<TextBlock x:Name="sizemask1" TextWrapping="Wrap" Text="Size" FontSize="24" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center"/>
 			</Grid>
 		</Flyout>
 		<Flyout x:Key="Edgedetectionflyout" Placement="Full">
@@ -95,11 +107,11 @@
 					<ListViewItem x:Name="kuwaharafilter" Content="Kuwahara  Filter" Margin="0" FontSize="48"/>
 					<ListViewItem x:Name="GausianFilter" Content="Gaussian Filter" Margin="0" FontSize="48"/>
 				</ListView>
-				<Slider x:Name="rozmiarfilter" Grid.Row="2" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Height="60" VerticalAlignment="Bottom"/>
-				<Slider x:Name="sigma" Grid.Row="4" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch"/>
+				<Slider x:Name="rozmiarfilter" Grid.Row="2" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Maximum="21" Minimum="3" StepFrequency="2" Orientation="Horizontal" Value="11"  />
+				<Slider x:Name="sigma" Grid.Row="4" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Maximum="25" Minimum="1" SmallChange="0.1" StepFrequency="0.1"/>
 				<Button x:Name="okfilter" Content="OK" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Grid.Row="5" Click="okfilter_Click" FontSize="48"/>
-				<TextBox x:Name="ssigma" HorizontalAlignment="Center" TextWrapping="Wrap" Text="Sigma" VerticalAlignment="Center" Grid.Row="3" FontSize="24"/>
-				<TextBox x:Name="srozmiar" Margin="0" Grid.Row="1" TextWrapping="Wrap" Text="Rozmiar" Padding="0" FontSize="24" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+				<TextBlock x:Name="Si" TextWrapping="Wrap" Text="Sigma" FontSize="24" Grid.Row="3" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+				<TextBlock x:Name="rrozmiar" HorizontalAlignment="Center" TextWrapping="Wrap" Text="Rozmiar" VerticalAlignment="Center" FontSize="24" Grid.Row="1"/>
 			</Grid>
 		</Flyout>
 		<Flyout x:Key="filtersflyout">
@@ -114,9 +126,33 @@
 				<Button x:Name="smoothsharpen" Content="Smooth&amp;Sharpen" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" FontSize="48" HorizontalContentAlignment="Left" Flyout="{StaticResource Sharpen}"/>
 			</Grid>
 		</Flyout>
+		<Flyout x:Name="binaryflyout" x:Key="binaryflyout" Placement="Full">
+			<Grid>
+				<Grid.RowDefinitions>
+					<RowDefinition Height="Auto"/>
+					<RowDefinition Height="Auto"/>
+					<RowDefinition Height="Auto"/>
+					<RowDefinition Height="Auto"/>
+					<RowDefinition Height="Auto"/>
+					<RowDefinition Height="Auto"/>
+				</Grid.RowDefinitions>
+				<Slider x:Name="Softsider" Grid.Row="4" Maximum="40" Minimum="15" StepFrequency="1"/>
+				<TextBlock x:Name="power1" TextWrapping="Wrap" Text="Power" Grid.Row="1" FontSize="24" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+				<TextBlock x:Name="soft" HorizontalAlignment="Center" TextWrapping="Wrap" Text="Soft" VerticalAlignment="Center" Grid.Row="3" FontSize="24"/>
+				<ListView x:Name="binarylist" Margin="0">
+					<ListViewItem x:Name="Global_Binary" Content="Global Binary" Margin="0" FontSize="48" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
+					<ListViewItem x:Name="local" Content="Local Binary" Margin="0" FontSize="48" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
+					<ListViewItem x:Name="mix" Content="Mix Binary" Margin="0" FontSize="48" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
+					<ListViewItem x:Name="bernsen" Content="Bernsen" FontSize="48" Margin="0" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+					<ListViewItem x:Name="otsu" Content="Otsu" FontSize="48" Margin="0" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+				</ListView>
+				<Button x:Name="okbinary" Content="OK" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Grid.Row="5" FontSize="48" Click="okbinary_Click"/>
+				<Slider x:Name="powerslider" Grid.Row="2" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Minimum="5" Maximum="25" StepFrequency="5"/>
+			</Grid>
+		</Flyout>
 	</Page.Resources>
 	<Page.Background>
-		<ImageBrush ImageSource="ms-appx:/tło3.jpg" Stretch="Fill"/>
+        <ImageBrush ImageSource="ms-appx:/tlo3.jpg" Stretch="Fill"/>
 	</Page.Background>
     <Page.TopAppBar>
         <AppBar Margin="0,0,0,-195" Opacity="0.95">
@@ -157,13 +193,13 @@
 			<ColumnDefinition Width="Auto" MaxWidth="1000" MinWidth="500"/>
 		</Grid.ColumnDefinitions>
 		<Grid.Background>
-			<ImageBrush Stretch="Fill" ImageSource="tło3.jpg"/>
+			<ImageBrush Stretch="Fill" ImageSource="tlo3.jpg"/>
 		</Grid.Background>
 		<Border BorderBrush="Black" BorderThickness="1" Margin="20" MinWidth="200" MinHeight="200"  >
 			<Image x:Name="Show" Margin="0"   MaxWidth="400" MaxHeight="300" />
 		</Border>
-		<Border BorderBrush="Black" BorderThickness="1" Grid.Column="2" Margin="20" >
-            <Image x:Name="change" Stretch="None"/>
+        <Border BorderBrush="Black" BorderThickness="1" Grid.Column="2" Margin="20" MinWidth="200" MinHeight="200"  >
+            <Image x:Name="change"  MaxWidth="400" MaxHeight="300"/>
 		</Border>
 		<Grid Grid.Column="1">
 			<Grid.RowDefinitions>
@@ -196,7 +232,7 @@
 				<RowDefinition Height="Auto"/>
 			</Grid.RowDefinitions>
 			<Button x:Name="filters" Content="Filters" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" FontSize="48" FontWeight="Bold" Flyout="{StaticResource filtersflyout}"/>
-			<Button x:Name="binaryzation" Content="Binaryzation" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Grid.Row="1" FontSize="48" FontWeight="Bold"/>
+			<Button x:Name="binaryzation" Content="Binaryzation" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Grid.Row="1" FontSize="48" FontWeight="Bold" Flyout="{StaticResource binaryflyout}"/>
 		</Grid>
 	</Grid>
 </Page>

@@ -42,15 +42,12 @@ namespace lab01biometria
         /// </summary>
         /// <param name="e">Event data that describes how this page was reached.  The Parameter
         /// property is typically used to configure the page.</param>
-        protected override void OnNavigatedTo(NavigationEventArgs e)
-        {
-        }
+        protected override void OnNavigatedTo(NavigationEventArgs e){}
+        
         IRandomAccessStream fileStream; // Wczytanie pliku do strumienia
         Guid decoderId;
-        
         byte[] sourcePixels;
         BitmapDecoder decoder;
-        
         int w = 0;
         int h = 0;
         Visitor operatio;
@@ -129,9 +126,6 @@ namespace lab01biometria
                 }
             else{
                 imagetowork= new image_Gray(sourcePixels, w, h);}
-
-            
-            
             
         }
         List<int> Lista= new List<int>();
@@ -148,12 +142,8 @@ namespace lab01biometria
             
         }
 
-        private void _try_Click(object sender, RoutedEventArgs e)
-
-        {
-            
-            
-            
+        private void _try_Click(object sender, RoutedEventArgs e){
+ 
             Originator org = new Originator();
             Caretaker caretaker = new Caretaker();
 
@@ -174,204 +164,19 @@ namespace lab01biometria
             }
             else
                 operatio.rob(imagetowork);
-             
-                
-            
-                
-           
-            
-                
-            
-
-            
             bitmpe(imagetowork);
-
             org.RestoreMemento(caretaker.Memento);
             imagetowork = org.State;
 
-            
-           
-            
-            
-           
-            
         }
 
-        private void SwitchEvent()
-        {
-            //switch (Event)
-            //{
-            //    case 1:
-
-            //       info.Text = "Change corolfull image to sepia colors. Sepia factor  20 ";
-            //        if (kolor != null)
-            //        {
-            //            //kolor.sepia(20);
-            //            bitmpe(kolor.show(), kolor);
-            //            szary = null;
-            //        }
-            //            //Nunit memento visitor
-            //        else if (szary != null)
-            //        {
-            //            info.Text = "Gray image and sepia dont work";
-
-            //        }
-            //        else
-            //            info.Text = "image empty";
-            //        break;
-
-            //    //moze byc warunek
-
-            //    case 2:
-
-            //        info.Text = "Change corolfull image to grayscale with natural luminaces algorithm";
-            //        if (kolor != null)
-            //        {
-            //            szary = kolor.grey_naturalimage();
-            //            kolor = null;
-            //            bitmpe(szary.show(), szary);
-            //        }
-            //        else if (szary != null)
-            //        {
-            //            info.Text = "image is grey!";
-            //        }
-            //        else
-            //            info.Text = "image empty";
-
-
-
-
-            //        ///mozebyc warunek
-            //        break;
-            //    case 3:
-            //        info.Text = "Histogram Eqaliztaion increases the global contrast of many images. Histogram of the color is distributed for all intensities";
-            //        //normalizacja na szarym!
-            //        if (kolor != null)
-            //        {
-            //            kolor.normalize();
-            //            bitmpe(kolor.show(), kolor);
-            //            szary = null;
-            //        }
-            //        else if (szary != null)
-            //        {
-            //            szary.normalize();
-            //            ///warunek
-            //            bitmpe(szary.show(), szary);
-            //            kolor = null;
-            //        }
-            //        else
-            //            info.Text = "image empty";
-
-
-
-
-            //        break;
-            //    case 4:
-            //        info.Text = "Change corofull image to grayscale with avrage algorithm";
-            //        //moze byc warunek
-            //        if (kolor != null)
-            //        {
-            //            szary = kolor.greyimage();
-            //            kolor = null;
-            //            bitmpe(szary.show(), szary);
-            //        }
-            //        else if (szary != null)
-            //        {
-            //            info.Text = "image is grey!";
-            //            bitmpe(szary.show(), szary);
-            //        }
-            //        else
-            //            info.Text = "image empty";
-
-
-            //        break;
-
-            //    case 5:
-            //        info.Text = "Change image to negative image";
-            //        if (kolor != null)
-            //        {
-            //            kolor.negative();
-            //            bitmpe(kolor.show(), kolor);
-            //        }
-            //        //warunek
-            //        else if (szary != null)
-            //        {
-            //            szary.negative();
-            //            bitmpe(szary.show(), szary);
-            //        }
-            //        else
-            //            info.Text = "image empty";
-
-            //        break;
-            //    case 6:
-            //        info.Text = "Roberts cross is  differential operator, its  approximate the gradient of an image for edage detection. Sensitivity to noise";
-            //        if (kolor != null)
-            //        {
-            //            image_RGB temp = kolor.Roberts();
-            //            bitmpe(temp.show(), temp);
-            //        }
-            //        //warunek
-            //        else if (szary != null)
-            //        {
-            //            //szary.Roberts();
-            //            bitmpe(szary.show(), szary);
-            //        }
-            //        else
-            //            info.Text = "There is no image";
-
-
-            //        break;
-            //    case 7:
-            //        info.Text = " Sobel is differential operator, its  approximate the gradient of an image for edage detection.Less sensitive to isolated high intensity";
-            //        if (kolor != null)
-            //        {
-            //            kolor.sobel();
-            //            bitmpe(kolor.show(), kolor);
-            //        }
-            //        //warunek
-            //        else if (szary != null)
-            //        {
-            //            //szary.sobel();
-            //            bitmpe(szary.show(), szary);
-            //        }
-            //        else
-            //            info.Text = "There is no image";
-
-
-            //        break;
-            //    case 8:
-            //        info.Text = "Change corolfull image to sepia colors. Sepia factor  40";
-            //        if (kolor != null)
-            //        {
-            //            kolor.sepia(40);
-            //            bitmpe(kolor.show(), kolor);
-            //        }
-            //        //warunek
-            //        else if (szary != null)
-            //        {
-            //            //szary.sobel();
-            //            // bitmpe(szary.show(), szary);
-            //        }
-            //        else
-            //            info.Text = "There is no image";
-
-
-            //        break;
-
-
-            //    default:
-            //        info.Text = "Nothing was selected";
-            //        //bitmpe(kolor.show());
-            //        break;
-            //}
-           
-            ////sourcePixels =(byte[]) a.utab.Clone();
-            ////this.obrazek.Source = this.im_effect.Source;
-        }
+        
         imageoperation.RGBtoGrey grey = new imageoperation.RGBtoGrey();
         imageoperation.RGBtoNaturalGrey greyn = new imageoperation.RGBtoNaturalGrey();
         private void OK_Click(object sender, RoutedEventArgs e)
         {
+            
+            
 
 
             if (operatio.GetType() == grey.GetType())
@@ -392,15 +197,8 @@ namespace lab01biometria
 
             bitmpe(imagetowork);
             Show.Source = change.Source;
-          
-            
 
-
-
-            
-                
         }
-        
 
         private void oki_Click(object sender, RoutedEventArgs e)
         {
@@ -473,9 +271,9 @@ namespace lab01biometria
 
         private void okfilter_Click(object sender, RoutedEventArgs e)
         {
-            var a=filterslist.SelectedIndex;
+            var a = filterslist.SelectedIndex;
             var Sigma = sigma.Value;
-            var Rozm =(int) rozmiarfilter.Value;
+            var Rozm = (int)rozmiarfilter.Value;
             switch (a)
             {
                 case 0:
@@ -492,15 +290,70 @@ namespace lab01biometria
                     break;
             }
 
-                advence.Hide();
+            advence.Hide();
 
-               filterslist.SelectedIndex = -1;
+            filterslist.SelectedIndex = -1;
 
+        }
 
-
-
+        private void oksharpen_Click(object sender, RoutedEventArgs e)
+        {
+            var a = Listasharpensmooth.SelectedIndex;
+            int rozmiar = (int)rozmmaski.Value;
+            switch (a)
+            {
+                case 0:
+                    operatio = new MeanFiltersharpen5();
+                    break;
+                case 1:
+                    operatio = new MeanFilterSharpen9();
+                    break;
+                case 2:
+                    operatio = new MeanFilteSharpen5and2();
+                    break;
+                case 3:
+                    operatio = new MeanFilterSmooth2();
+                    break;
+                case 4:
+                    operatio = new MeanFilterSmooth4();
+                    break;
+                case 5:
+                    operatio = new MeanFilterSmooth1(rozmiar);
+                    break;
 
             }
+            Listasharpensmooth.SelectedIndex = -1;
+            sharpenflyout.Hide();
+
+        }
+
+        private void okbinary_Click(object sender, RoutedEventArgs e)
+        {
+            var a = binarylist.SelectedIndex;
+            var roz = (int)powerslider.Value;
+            var odchylenie = (int)Softsider.Value;
+            switch (a)
+            {
+                case 0:
+                    operatio = new imageoperation.ThresholdingGlobal();
+                    break;
+                case 1:
+                    operatio=new imageoperation.BinaryLocalMean(roz);
+                    break;
+                case 2:
+                    operatio = new imageoperation.BinaryLocalGlobal(roz, odchylenie);
+                    break;
+                case 3:
+                    operatio = new imageoperation.Bernsen(roz,odchylenie);
+                    break;
+                case 4:
+                    operatio = new imageoperation.Otsu();
+                    break;
+            }
+
+            binaryflyout.Hide();
+            binarylist.SelectedIndex = -1;
+        }
 
         
 

@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace lab01biometria
 {
+    
     class image_RGB : image_as_tab
     {
         public byte[][] B;

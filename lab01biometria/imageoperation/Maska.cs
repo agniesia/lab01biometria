@@ -10,7 +10,7 @@ namespace lab01biometria
     abstract class Maska:Visitor
     {
         public int[,] ElemMaski;
-        public byte Rozmiar;
+        public int Rozmiar;
         public int Norma;
 
         public void MaskaAll(image_as_tab image)
@@ -42,9 +42,9 @@ namespace lab01biometria
                     {
                         for (int j = 0; j < Rozmiar; j++)
                         {
-                            SumaR += rgb.R[x + i - 1][y + j - 1] * ElemMaski[i, j];
-                            SumaB += rgb.G[x + i - 1][y + j - 1] * ElemMaski[i, j];
-                            SumaG += rgb.G[x + i - 1][y + j - 1] * ElemMaski[i, j];
+                            SumaR += rgb.R[x + i - start][y + j - start] * ElemMaski[i, j];
+                            SumaB += rgb.B[x + i - start][y + j - start] * ElemMaski[i, j];
+                            SumaG += rgb.G[x + i - start][y + j - start] * ElemMaski[i, j];
 
                         }
                     }
@@ -53,12 +53,28 @@ namespace lab01biometria
                     TempR[x, y] = SumaR / Norma;
                     TempG[x, y] = SumaG / Norma;
                     TempB[x, y] = SumaB / Norma;
+                   if ( TempR[x, y] > 255)
+                         TempR[x, y] = 255;
+                    if (TempG[x, y] > 255)
+                        TempG[x, y]= 255;
+                    if (TempB[x, y] > 255)
+                        TempB[x, y] = 255;
+
+                    if ( TempR[x, y] < 0)
+                         TempR[x, y]= 0;
+                    if (TempG[x, y]< 0)
+                        TempG[x, y] = 0;
+                    if (TempB[x, y]< 0)
+                        TempB[x, y] = 0;
+
+                    
+                
                 }
             }
             //powino przypisc null==0 dla brzegów zdjęcia czyli obciac mozna zostawic stare piksele zmianiaj c p mozna tez maske nadkalamc
-            for (int c = 0; c < rgb.w; c++)
+            for (int c = start; c < rgb.w-start; c++)
             {
-                for (int p = 0; p < rgb.h; p++)
+                for (int p = start; p < rgb.h-start; p++)
                 {
                     rgb.R[c][p] = (byte)TempR[c, p];
                     rgb.G[c][p] = (byte)TempG[c, p];
@@ -86,13 +102,22 @@ namespace lab01biometria
                     {
                         for (int j = 0; j < Rozmiar; j++)
                         {
-                            SumaGrey += Grey.Greycanal[x + i - 1][y + j - 1] * ElemMaski[i, j];
+                            SumaGrey += (Grey.Greycanal[x + i - start][y + j - start] * ElemMaski[i, j]);
                             
                         }
                     }
 
 
-                    TempGrey[x, y] = SumaGrey / Norma;
+                    SumaGrey = SumaGrey / Norma;
+                    if (SumaGrey > 255)
+                    {
+                        SumaGrey = 255;
+                    }
+                    else if(SumaGrey<0)
+                    {
+                        SumaGrey=0;
+                    }
+                    TempGrey[x, y] = SumaGrey;
                     
                 }
             }
@@ -101,6 +126,7 @@ namespace lab01biometria
             {
                 for (int p = 0; p < Grey.h; p++)
                 {
+                    
                     Grey.Greycanal[c][p] = (byte)TempGrey[c, p];
                     
                 }
@@ -117,11 +143,12 @@ namespace lab01biometria
 
     class MeanFilterSmooth1 : Maska
     {
-        private int[,] ElemMaski;
-        private byte Rozmiar = 3;
-        private int Norma = 9;
+        
         public MeanFilterSmooth1(int rozmiar)
         {
+            Rozmiar = rozmiar;
+            Norma = rozmiar*rozmiar;
+            ElemMaski=new int[rozmiar,rozmiar];
             for (int i = 0; i < rozmiar; i++)
             {
                 for (int j = 0; j < rozmiar; j++)
@@ -134,34 +161,54 @@ namespace lab01biometria
     }
     class MeanFilterSmooth2 : Maska
     {
-        public int[,] ElemMaski = { { 1, 1, 1 }, { 1, 2, 1 }, { 1, 1, 1 } };
-        public byte Rozmiar = 3;
-        public int Norma = 10;
+        
+        public MeanFilterSmooth2()
+        {
+            ElemMaski = new [,]{ { 1, 1, 1 }, { 1, 2, 1 }, { 1, 1, 1 } };
+            Rozmiar = 3;
+            Norma = 10;
+
+        }
     }
     class MeanFilterSmooth4 : Maska
     {
-        public int[,] ElemMaski = { { 1, 2, 1 }, { 2, 4, 2 }, { 1, 2, 1 } };
-        public byte Rozmiar = 3;
-        public int Norma = 16;
+       
+        public MeanFilterSmooth4()
+        {
+            ElemMaski = new[,] { { 1, 2, 1 }, { 2, 4, 2 }, { 1, 2, 1 } };
+            Rozmiar = 3;
+            Norma = 16;
+
+        }
 
     }
     class MeanFiltersharpen5 : Maska
     {
-        public int[,] ElemMaski = { { 0, -1, 0}, { -1, 5, -1 }, { 0, -1, 0 } };
-        public byte Rozmiar = 3;
-        public int Norma = 1;
+        public MeanFiltersharpen5()
+        {
+            ElemMaski = new int[,]{ { 0, -1, 0}, { -1, 5, -1 }, { 0, -1, 0 } };
+            Rozmiar = 3;
+            Norma = 1;
+        }
     }
     class MeanFilterSharpen9 : Maska
     {
-        public int[,] ElemMaski = { { 1, -2, 1}, { -2, 9, -2 }, { 1, -2, 1} };
-        public byte Rozmiar = 3;
-        public int Norma = 1;
+        
+        public MeanFilterSharpen9(){
+            ElemMaski =new int[,] { { -1, -1, -1}, { -1, 9, -1 }, { -1, -1, -1} };
+            Rozmiar = 3;
+            Norma = 1;
+        }
     }
     class MeanFilteSharpen5and2 : Maska
     {
-        public int[,] ElemMaski = { { 1, -2, 1}, { -2, 5, -2 }, { 1, -2, 1 } };
-        public byte Rozmiar = 3;
-        public int Norma = 1;
+        
+        public MeanFilteSharpen5and2()
+        {
+            ElemMaski =new int[,] { { 1, -2, 1}, { -2, 5, -2 }, { 1, -2, 1 } };
+            Rozmiar = 3;
+            Norma = 1;
+        }
     }
     
 }

@@ -15,7 +15,9 @@ namespace lab01biometria.imageoperation
             this.local = local;
             this.sigma = sigma;
         }
-        public void rob(image_as_tab image) { }
+        public void rob(image_as_tab image) {
+            BinaryLocalGlobalAll(image);
+        }
         public void BinaryLocalGlobalAll(image_as_tab image)
         {
             image.Accept(this);
@@ -34,20 +36,21 @@ namespace lab01biometria.imageoperation
 
         public void Visit(image_Gray Grey)
         {
-            byte zero = 0, one = 1;
+            byte zero = 0, one = 255;
             var globalmean = Grey.utab.Sum(x => x) / Grey.utab.Length;
             byte[][] Temp = new byte[Grey.w][];
-            for (int x = 1; x < Grey.w - 1; x++)
+            int range = (int)local / 2;
+            for (int x = range; x < Grey.w - range; x++)
             {
                 Temp[x] = new byte[Grey.h];
-                for (int y = 1; y < Grey.h - 1; y++)
+                for (int y = range; y < Grey.h - range; y++)
                 {
                     var Suma = 0;
                     for (int i = 0; i < local; i++)
                     {
                         for (int j = 0; j < local; j++)
                         {
-                            Suma += Grey.Greycanal[x + i - 1][y + j - 1];
+                            Suma += Grey.Greycanal[x + i - range][y + j - range];
 
                         }
 
@@ -63,7 +66,12 @@ namespace lab01biometria.imageoperation
                         Temp[x][y] = Grey.Greycanal[x][y] >= globalmean? one : zero;
                 }
             }
-            Grey.Greycanal = (byte[][])Temp.Clone();//binryzacja bez brzegów 
+            for (int x = range; x < Grey.w - range; x++)
+            {
+
+                for (int y = range; y < Grey.h - range; y++)
+                    Grey.Greycanal[x][y] = (byte)Temp[x][y];
+            }
         }
         
         
