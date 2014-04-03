@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace lab01biometria.Binaryoperation
 {
-    class Skeleton:BinaryVisitor
+    class Skeleton:Visitor
     {
         private static int[][] A = new int[][] {
         new int[]{3, 6, 7, 12, 14, 15, 24, 28, 30, 31, 48, 56, 60, 62, 63, 96, 112, 120, 124, 126, 127, 129, 131, 135,143, 159, 191, 192, 193, 195, 199, 207, 223, 224, 225, 227, 231, 239, 240, 241, 243, 247, 248, 249, 251, 252, 253, 254},
@@ -19,12 +19,25 @@ namespace lab01biometria.Binaryoperation
 
         private static int[] A1pix = { 3, 6, 7, 12, 14, 15, 24, 28, 30, 31, 48, 56, 60, 62, 63, 96, 112, 120, 124, 126, 127, 129, 131, 135, 143, 159, 191, 192, 193, 195, 199, 207, 223, 224, 225, 227, 231, 239, 240, 241, 243, 247, 248, 249, 251, 252, 253, 254 };
         private static int[][] maska = { new int[] { 128, 64, 32 }, new int[] { 1, 0, 16 }, new int[] { 2, 4, 8 } };
-        public void SkeletonAll(Binary binary)
+        public void SkeletonAll(image_as_tab binary)
         {
-            binary.BinaryAccept(this);
+            binary.Accept(this);
         }
-        public void  VisitBinary(Binary binary){
-            Skeletonize(binary);
+        public void rob(image_as_tab binary)
+        {
+            SkeletonAll(binary);
+        }
+        public void Visit(image_RGB Grey) { }
+        public void  Visit(image_Gray Grey){
+            Binary bin = new Binary(Grey.Greycanal, Grey.h, Grey.w);
+            Skeletonize(bin);
+            for (int y = 0; y < bin.h; y++)
+            {
+                for (int x = 0; x < bin.w; x++)
+                {
+                    Grey.Greycanal[x][y] = 1;//(byte) bin.BinaryCanal[x][y];
+                }
+            }
         }
         private void countwaga(Binary binary)
         {

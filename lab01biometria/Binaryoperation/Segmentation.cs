@@ -6,35 +6,51 @@ using System.Threading.Tasks;
 
 namespace lab01biometria.Binaryoperation
 {
-    interface BinaryVisitor
+    
+    class Segmentation:Visitor
     {
-        void VisitBinary(Binary binary);
-    }
-    class Segmentation:BinaryVisitor
-    {
-        public void SegemtationAll(Binary binary )
+        public void SegemtationAll(image_as_tab binary )
         {
-            binary.BinaryAccept(this);
+            binary.Accept(this);
 
         }
-        public void VisitBinary(Binary binary)
+        public void rob(image_as_tab image)
         {
+            SegemtationAll(image);
+        }
+        public void Visit(image_Gray Grey)
+        {
+            Binary binary = new Binary(Grey.Greycanal, Grey.w, Grey.h);
+            
             segment(binary);
+            for (int y = 0; y < binary.h; y++)
+            {
+                for (int x = 0; x < binary.w; x++)
+                {
+                    Grey.Greycanal[x][y] = (byte)binary.BinaryCanal[x][y];
+                }
+            }
         }
-
+        public void Visit(image_RGB rgb) { }
         private void segment(Binary binary)
         {
             List<Tuple<int, int>> bufor = new List<Tuple<int, int>>();
             List<Tuple<int, int, int, int>> wspolrzedne = new List<Tuple<int, int, int, int>>();
-
+            for (int y = 0; y < binary.h; y++)
+            {
+                for (int x = 0; x < binary.w; x++)
+                {
+                    binary.BinaryCanal[x][y]=binary.BinaryCanal[x][y] < 1 ? 1 : binary.BinaryCanal[x][y];
+                }
+            }
             int wsp_minx = binary.w;
             int wsp_miny = binary.h;
             int wsp_maxx = 0;
             int wsp_maxy = 0;
-            byte kolor = 2;
-            for (int y = 0; y < binary.h; y++)
+            byte kolor = 100;
+            for (int y = 3; y < binary.h-3; y++)
             {
-                for (int x = 0; x < binary.w; x++)
+                for (int x = 3; x < binary.w-3; x++)
                 {
                     if (binary.BinaryCanal[x][y] == 1)
                     {
@@ -58,6 +74,7 @@ namespace lab01biometria.Binaryoperation
                                 {
                                     for (int j = 0; j < 3; j++)
                                     {
+
                                         p = element.Item1 + i - 1;
                                         d = element.Item2 + j - 1;
                                         if (binary.BinaryCanal[p][d] != 1)

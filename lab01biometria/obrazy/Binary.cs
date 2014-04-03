@@ -11,26 +11,23 @@ namespace lab01biometria
         public int[][] BinaryCanal;
         
         public Binary():base() { }
-        public Binary(byte[] orginal_tab, int w, int h):base(orginal_tab,w,h)
+        public Binary(byte[][] orginal_tab, int w, int h):base()
             
         {
             BinaryCanal = new int[w][];
-            var k = 0;
+            base.w = w;
+            base.h = h;
             for (int i = 0; i < w; i++)
             {
                 BinaryCanal[i] = new int[h];
                 for (int j = 0; j < h; j++)
                 {
-                    k = 4 * (j * w + i);
-                    BinaryCanal[i][j] = orginal_tab[k];
+                  
+                    BinaryCanal[i][j] = orginal_tab[i][j];
                 }
             }
         }
-        public void BinaryAccept(Binaryoperation.BinaryVisitor vistor )
-        {
-            vistor.VisitBinary(this); 
-            
-        }
+        
         
     }
 }

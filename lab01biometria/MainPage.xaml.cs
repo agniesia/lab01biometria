@@ -34,6 +34,7 @@ namespace lab01biometria
         public MainPage()
         {
             this.InitializeComponent();
+            przyciskiEnabled();
 
         }
 
@@ -43,7 +44,31 @@ namespace lab01biometria
         /// <param name="e">Event data that describes how this page was reached.  The Parameter
         /// property is typically used to configure the page.</param>
         protected override void OnNavigatedTo(NavigationEventArgs e){}
-        
+        private void przyciskiEnabled()
+        {
+
+            color.IsEnabled = false;
+            noise.IsEnabled = false;
+            Binoperation.IsEnabled = false;
+            resize.IsEnabled = false;
+            filters.IsEnabled = false;
+            binaryzation.IsEnabled = false;
+            Aply.IsEnabled = false;
+            OK.IsEnabled = false;
+
+
+
+        }
+        private void przyciskiVisible()
+        {
+            OK.IsEnabled = true;
+            Aply.IsEnabled = true;
+            color.IsEnabled = true;
+            noise.IsEnabled = true;
+            resize.IsEnabled = true;
+            filters.IsEnabled = true;
+        }
+
         IRandomAccessStream fileStream; // Wczytanie pliku do strumienia
         Guid decoderId;
         byte[] sourcePixels;
@@ -54,10 +79,11 @@ namespace lab01biometria
         imageoperation.RGBtoGrey x;
         imageoperation.RGBtoNaturalGrey y;
         image_as_tab imagetowork;
-        
+        List<int> Lista = new List<int>();
 
         private async void wczytajimage(object sender, RoutedEventArgs e)
         {
+            przyciskiEnabled();
             FileOpenPicker FOP = new FileOpenPicker(); // Klasa okna wybierania pliku
             FOP.ViewMode = PickerViewMode.Thumbnail; // Rodzaj podglądu plików w oknie - tu jako małe obrazy
             FOP.SuggestedStartLocation = PickerLocationId.PicturesLibrary; // Od jakiego katalogu okno powinno zacząć wyświetlanie
@@ -68,67 +94,77 @@ namespace lab01biometria
             FOP.FileTypeFilter.Add(".gif");
             StorageFile file = await FOP.PickSingleFileAsync();
             // Uruchomienie wybierania pliku pojedynczego
-            
+
             if (file != null)
             {
-                    fileStream = await file.OpenAsync(FileAccessMode.Read);
-                     // Dekoder będzie potrzebny później przy pracy na obrazie
-                    BitmapImage bitmapImage = new BitmapImage(); // Stworzenie obiektu obrazu do wyświetlenia
-                    bitmapImage.SetSource(fileStream); // Przepisanie obrazu ze strumienia do obiektu obrazu przez wartosc
-                    this.Show.Source = bitmapImage; // Przypisanie obiektu obrazu do elementu interfejsu typu "Image" o nazwie "Oryginał"
-                    // Poniżej znajduje się zapamiętanie dekodera
-                    w=bitmapImage.PixelWidth;
-                    h=bitmapImage.PixelHeight;
-                    
-                    switch (file.FileType.ToLower())
-                    {
+                przyciskiVisible();
+
+                fileStream = await file.OpenAsync(FileAccessMode.Read);
+                // Dekoder będzie potrzebny później przy pracy na obrazie
+                BitmapImage bitmapImage = new BitmapImage(); // Stworzenie obiektu obrazu do wyświetlenia
+                bitmapImage.SetSource(fileStream); // Przepisanie obrazu ze strumienia do obiektu obrazu przez wartosc
+                this.Show.Source = bitmapImage; // Przypisanie obiektu obrazu do elementu interfejsu typu "Image" o nazwie "Oryginał"
+                // Poniżej znajduje się zapamiętanie dekodera
+                w = bitmapImage.PixelWidth;
+                h = bitmapImage.PixelHeight;
+
+                switch (file.FileType.ToLower())
+                {
                     case ".jpg":
                     case ".jpeg":
-                    decoderId = BitmapDecoder.JpegDecoderId;
-                    break;
+                        decoderId = BitmapDecoder.JpegDecoderId;
+                        break;
                     case ".bmp":
-                    decoderId = BitmapDecoder.BmpDecoderId;
-                    break;
+                        decoderId = BitmapDecoder.BmpDecoderId;
+                        break;
                     case ".png":
-                    decoderId = BitmapDecoder.PngDecoderId;
-                    break;
+                        decoderId = BitmapDecoder.PngDecoderId;
+                        break;
                     case ".gif":
-                    decoderId = BitmapDecoder.GifDecoderId;
-                    break;
+                        decoderId = BitmapDecoder.GifDecoderId;
+                        break;
                     default:
-                    return;}
-            }
-            decoder = await BitmapDecoder.CreateAsync(decoderId, fileStream); // Dekodowanie strumienia za pomocą dekodera
-            // Dekodowanie strumienia do klasy z informacjami o jego parametrach
-            PixelDataProvider pixelData = await decoder.GetPixelDataAsync(
-            BitmapPixelFormat.Bgra8,// Warto tu zwrócić uwagę jak przechowywane są kolory!!!
-            BitmapAlphaMode.Straight,
-            new BitmapTransform(),
-            ExifOrientationMode.IgnoreExifOrientation,
-            ColorManagementMode.DoNotColorManage
-            );
-            
-            sourcePixels=pixelData.DetachPixelData();
-            byte[] RCanal = sourcePixels.Where((x, i) => i % 4 == 0).ToArray();
-            byte[] BCanal = sourcePixels.Where((x, i) => i % 4 == 1).ToArray();
-            byte[] GCanal = sourcePixels.Where((x, i) => i % 4 == 2).ToArray();
-            var suma=0;
-            for(int i=0;i<RCanal.Length;i++){
+                        return;
+                }
 
-                suma+=Math.Abs(RCanal[i] - BCanal[i]) + Math.Abs(RCanal[i] - RCanal[i]) + Math.Abs(BCanal[i] - RCanal[i]); 
-                
-                
-            }
-            if (suma!=0) 
+                decoder = await BitmapDecoder.CreateAsync(decoderId, fileStream); // Dekodowanie strumienia za pomocą dekodera
+                // Dekodowanie strumienia do klasy z informacjami o jego parametrach
+                PixelDataProvider pixelData = await decoder.GetPixelDataAsync(
+                BitmapPixelFormat.Bgra8,// Warto tu zwrócić uwagę jak przechowywane są kolory!!!
+                BitmapAlphaMode.Straight,
+                new BitmapTransform(),
+                ExifOrientationMode.IgnoreExifOrientation,
+                ColorManagementMode.DoNotColorManage
+                );
+
+                sourcePixels = pixelData.DetachPixelData();
+                byte[] RCanal = sourcePixels.Where((t, i) => i % 4 == 0).ToArray();
+                byte[] BCanal = sourcePixels.Where((t, i) => i % 4 == 1).ToArray();
+                byte[] GCanal = sourcePixels.Where((t, i) => i % 4 == 2).ToArray();
+                var suma = 0;
+                for (int i = 0; i < RCanal.Length; i++)
+                {
+
+                    suma += Math.Abs(RCanal[i] - BCanal[i]) + Math.Abs(RCanal[i] - RCanal[i]) + Math.Abs(BCanal[i] - RCanal[i]);
+
+
+                }
+                if (suma != 0)
                 {
                     imagetowork = new image_RGB(sourcePixels, w, h);
-                    
+
                 }
-            else{
-                imagetowork= new image_Gray(sourcePixels, w, h);}
-            
+                else
+                {
+                    imagetowork = new image_Gray(sourcePixels, w, h);
+                }
+                change.Source =null;
+                y = null;
+                operatio = null;
+                x = null;
+            }
         }
-        List<int> Lista= new List<int>();
+       
 
         
         private async void bitmpe(image_as_tab obiekt)
@@ -142,61 +178,78 @@ namespace lab01biometria
             
         }
 
-        private void _try_Click(object sender, RoutedEventArgs e){
- 
+        private void _try_Click(object sender, RoutedEventArgs e)
+        {
+
             Originator org = new Originator();
             Caretaker caretaker = new Caretaker();
 
             org.State = imagetowork;
             caretaker.Memento = org.SaveMemento();
 
-
-            if (operatio.GetType() == grey.GetType())
+            try
             {
-                grey.rob(imagetowork);
-                imagetowork = grey.GreyElement.copy();
-            }
+                if (operatio.GetType() == grey.GetType())
+                {
+                    grey.rob(imagetowork);
+                    imagetowork = grey.GreyElement.copy();
+                }
 
-            else if (operatio.GetType() == greyn.GetType())
-            {
-                greyn.rob(imagetowork);
-                imagetowork = greyn.GreyElement.copy();
+                else if (operatio.GetType() == greyn.GetType())
+                {
+                    greyn.rob(imagetowork);
+                    imagetowork = greyn.GreyElement.copy();
+                }
+                else
+                    operatio.rob(imagetowork);
+                bitmpe(imagetowork);
+                org.RestoreMemento(caretaker.Memento);
+                imagetowork = org.State;
             }
-            else
-                operatio.rob(imagetowork);
-            bitmpe(imagetowork);
-            org.RestoreMemento(caretaker.Memento);
-            imagetowork = org.State;
+            catch (System.NullReferenceException t)
+            {
+                info.Text = "The operation faild, check image operation again and confirm";
+            }
 
         }
-
         
         imageoperation.RGBtoGrey grey = new imageoperation.RGBtoGrey();
         imageoperation.RGBtoNaturalGrey greyn = new imageoperation.RGBtoNaturalGrey();
         private void OK_Click(object sender, RoutedEventArgs e)
         {
-            
-            
 
 
-            if (operatio.GetType() == grey.GetType())
+
+            try
             {
-                grey.rob(imagetowork);
-                imagetowork = grey.GreyElement.copy();
+                if (operatio.GetType() == grey.GetType())
+                {
+                    grey.rob(imagetowork);
+                    imagetowork = grey.GreyElement.copy();
+                    binaryzation.IsEnabled = true;
+                }
+
+                else if (operatio.GetType() == greyn.GetType())
+                {
+                    greyn.rob(imagetowork);
+                    imagetowork = greyn.GreyElement.copy();
+                    binaryzation.IsEnabled = true;
+                }
+                else
+                    operatio.rob(imagetowork);
+                bitmpe(imagetowork);
+                Show.Source = change.Source;
+                operatio = null;
+            }
+            catch (System.NullReferenceException t)
+            {
+                info.Text = "The operation faild";
+                info.Text = "check image operation again and confirm";
             }
 
-            else if (operatio.GetType() == greyn.GetType())
-            {
-                greyn.rob(imagetowork);
-                imagetowork = greyn.GreyElement.copy();
-            }
-            else
-                operatio.rob(imagetowork);
-                
             
 
-            bitmpe(imagetowork);
-            Show.Source = change.Source;
+           
 
         }
 
@@ -353,6 +406,55 @@ namespace lab01biometria
 
             binaryflyout.Hide();
             binarylist.SelectedIndex = -1;
+        }
+
+        private void okzoom_Click(object sender, RoutedEventArgs e)
+        {
+            var Zoom = powerzoom.Value;
+            int a = skalowanielist.SelectedIndex;
+            int kat =(int) rarte.Value;
+            switch (a)
+            {
+                case 0:
+                    operatio = new imageoperation.Skalowanie(Zoom);
+                    break;
+                case 1:
+                    operatio = new imageoperation.Scalebilinear(Zoom);
+                    break;
+                case 2:
+                    Zoom = 1 / Zoom;
+                    operatio = new imageoperation.Skalowanie(Zoom);
+                    break;
+                case 3:
+                    Zoom =1/Zoom;
+                    operatio = new imageoperation.ScaleMean(Zoom);
+                    break;
+                case 4:
+                    operatio = new imageoperation.Roate(kat);
+                    
+                    break;
+
+            }
+            resizeflyout.Hide();
+            skalowanielist.SelectedIndex = -1;
+        }
+
+        private void binoperationok_Click(object sender, RoutedEventArgs e)
+        {
+            var a=binoperationlist.SelectedIndex;
+            switch (a)
+            {
+                case 0:
+                    operatio=new  Binaryoperation.Skeleton();
+                    break;
+                case 1:
+                    operatio = new Binaryoperation.Segmentation();
+                    break;
+
+            }
+            binoperatinflyout.Hide();
+            binoperationlist.SelectedIndex = -1;
+
         }
 
         

@@ -23,6 +23,7 @@ namespace lab01biometria.imageoperation
         }
         public void Visit(image_RGB rgb)
         {
+            
             GreyElement=rgb.greyimage();
             //byte z = 0;
             //byte[] temp = new byte[rgb.w * rgb.h * 4];

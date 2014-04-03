@@ -8,22 +8,25 @@ namespace lab01biometria.imageoperation
 {
     class Skalowanie:Visitor
     {
-        int skala=0;
-        public Skalowanie(int skala){
+        double skala=0;
+        public Skalowanie(double skala){
             if(skala<=0)
                 throw new BadImputFunkcionExeption();
             this.skala=skala;
 
         }
-        public void rob(image_as_tab image) { }
+        public void rob(image_as_tab image) {
+            SkalowanieAll(image);
+        }
         public void SkalowanieAll(image_as_tab image)
         {
             image.Accept(this);
 
         }
         public void Visit(image_Gray Grey){
-            int newh = Grey.h / skala;
-            int neww = Grey.w / skala;
+           
+            int newh =(int)(Grey.h *skala);
+            int neww =(int)( Grey.w * skala);
             byte[][] NewGrey = new byte[neww][];
             byte[][] Newalfa = new byte[neww][];
             for (int x = 0; x < neww; x++)
@@ -32,8 +35,8 @@ namespace lab01biometria.imageoperation
                 Newalfa[x] = new byte[newh];
                 for (int y = 0; y < newh; y++)
                 {
-                    NewGrey[x][y] = Grey.Greycanal[x / skala][y / skala];
-                    Newalfa[x][y] = Grey.alfa[x / skala][y / skala];
+                    NewGrey[x][y] = Grey.Greycanal[(int)(x / skala)][(int)(y / skala)];
+                    Newalfa[x][y] = Grey.alfa[(int)(x / skala)][(int)(y / skala)];
                 }
             }
             //uwaga na resztki 
@@ -42,11 +45,12 @@ namespace lab01biometria.imageoperation
             Grey.h = newh;
             Grey.w = neww;
 
+
         }
         public void Visit(image_RGB rgb)
         {
-            int newh = rgb.h / 2;
-            int neww = rgb.w / 2;
+            int newh =(int) (rgb.h *skala);
+            int neww = (int)(rgb.w * skala);
             byte[][] NewR = new byte[neww][];
             byte[][] NewG = new byte[neww][];
             byte[][] NewB = new byte[neww][];
@@ -59,10 +63,10 @@ namespace lab01biometria.imageoperation
                 Newalfa[x] = new byte[newh];
                 for (int y = 0; y < newh; y++)
                 {
-                    NewR[x][y] = rgb.R[x / skala][y / skala];
-                    NewG[x][y] = rgb.G[x / skala][y / skala];
-                    NewB[x][y] = rgb.B[x / skala][y / skala];
-                    Newalfa[x][y] = rgb.alfa[x / skala][y / skala];
+                    NewR[x][y] = rgb.R[(int)(x / skala)][(int)(y / skala)];
+                    NewG[x][y] = rgb.G[(int)(x / skala)][(int)(y / skala)];
+                    NewB[x][y] = rgb.B[(int)(x / skala)][(int)(y / skala)];
+                    Newalfa[x][y] = rgb.alfa[(int)(x / skala)][(int)(y / skala)];
                 }
             }
             //uwaga na resztki 

@@ -50,8 +50,33 @@
 				<Button x:Name="noiseok" Content="OK" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Grid.Row="5" FontSize="48" Click="noise_Click"/>
 			</Grid>
 		</Flyout>
-		<Flyout x:Key="resizeflyout" Placement="Full">
-			<Grid/>
+        <Flyout x:Name="resizeflyout" x:Key="resizeflyout" Placement="Full">
+			<Grid>
+				<Grid.RowDefinitions>
+					<RowDefinition Height="Auto"/>
+					<RowDefinition Height="Auto"/>
+					<RowDefinition Height="Auto"/>
+					<RowDefinition Height="Auto"/>
+					<RowDefinition Height="Auto"/>
+					<RowDefinition Height="Auto"/>
+				</Grid.RowDefinitions>
+				<TextBlock x:Name="rotetr" TextWrapping="Wrap" Text="Rotate" Grid.Row="3" FontSize="24" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+				<Slider x:Name="rarte" Grid.Row="4" RenderTransformOrigin="0.5,0.5" Maximum="360" IsDirectionReversed="True">
+					<Slider.RenderTransform>
+						<CompositeTransform ScaleY="-1" ScaleX="-1"/>
+					</Slider.RenderTransform>
+				</Slider>
+				<TextBlock x:Name="change_size" TextWrapping="Wrap" Text="Zoom Power" Margin="0" Grid.Row="1" FontSize="24" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+				<Button x:Name="okzoom" Content="OK" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Grid.Row="6" FontSize="48" Click="okzoom_Click"/>
+				<ListView x:Name="skalowanielist" Margin="0">
+					<ListViewItem x:Name="Zoom_NN" Content="Zoom" Margin="0" FontSize="48"/>
+					<ListViewItem x:Name="Zoom_NB" Content="Zoom NNB" Margin="0" FontSize="48"/>
+					<ListViewItem x:Name="unzoom" Content="UnZoom " Margin="0" FontSize="48"/>
+					<ListViewItem x:Name="unzoomnnb" Content="UnZoom NNB" Margin="0" FontSize="48"/>
+					<ListViewItem x:Name="Rotate" Content="Rotate" Margin="0" FontSize="48"/>
+				</ListView>
+				<Slider x:Name="powerzoom" Grid.Row="2" Maximum="5" Minimum="1" StepFrequency="0.1"/>
+			</Grid>
 		</Flyout>
 		<Flyout x:Key="button" Placement="Full">
 			<Grid Height="100" Width="100"/>
@@ -150,6 +175,19 @@
 				<Slider x:Name="powerslider" Grid.Row="2" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Minimum="5" Maximum="25" StepFrequency="5"/>
 			</Grid>
 		</Flyout>
+		<Flyout x:Name="binoperatinflyout" x:Key="binoperation" Placement="Full">
+			<Grid>
+				<Grid.RowDefinitions>
+					<RowDefinition Height="Auto"/>
+					<RowDefinition Height="Auto"/>
+				</Grid.RowDefinitions>
+				<Button x:Name="binoperationok" Content="OK" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Grid.Row="1" FontSize="48" Click="binoperationok_Click"/>
+				<ListView x:Name="binoperationlist" Margin="0">
+					<ListViewItem x:Name="skeletone" Content="KMM Skeletone" Margin="0" FontSize="48"/>
+					<ListViewItem x:Name="segemetation" Content="Segementation" Margin="0" FontSize="48"/>
+				</ListView>
+			</Grid>
+		</Flyout>
 	</Page.Resources>
 	<Page.Background>
         <ImageBrush ImageSource="ms-appx:/tlo3.jpg" Stretch="Fill"/>
@@ -225,6 +263,7 @@
 				<RowDefinition Height="Auto" MinHeight="100"/>
 			</Grid.RowDefinitions>
 			<Button x:Name="resize" Content="Resize" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" FontSize="48" FontWeight="Bold" Grid.Row="1" Flyout="{StaticResource resizeflyout}"/>
+			<Button x:Name="Binoperation" Content="BinaryOperation" HorizontalAlignment="Stretch" Margin="0" VerticalAlignment="Stretch" FontSize="48" Flyout="{StaticResource binoperation}"/>
 		</Grid>
 		<Grid x:Name="last" Grid.Row="2" Grid.Column="2" Margin="0,50,0,0">
 			<Grid.RowDefinitions>

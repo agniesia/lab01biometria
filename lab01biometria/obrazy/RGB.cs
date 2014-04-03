@@ -70,9 +70,9 @@ namespace lab01biometria
                 for (int i = 0; i < w; i++)
                 {
 
-                    temp[4 * (j * w + i)] = B[i][j];
+                    temp[4 * (j * w + i)] =  B[i][j];
                     temp[4 * (j * w + i) + 1] = G[i][j];
-                    temp[4 * (j * w + i) + 2] = R[i][j];
+                    temp[4 * (j * w + i) + 2] =R[i][j];
                     temp[4 * (j * w + i) + 3] = alfa[i][j];
 
 

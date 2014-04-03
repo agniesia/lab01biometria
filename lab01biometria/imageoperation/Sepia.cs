@@ -8,10 +8,12 @@ namespace lab01biometria.imageoperation
 {
     class Sepia:Visitor
     {
+        
         int Waga;
         image_RGB rgb=null;
         public Sepia(int Waga){
             this.Waga = Waga;
+            
         }
         public void SepiaAll(image_as_tab image)
         {
