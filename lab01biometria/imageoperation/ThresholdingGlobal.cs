@@ -52,7 +52,7 @@ namespace lab01biometria.imageoperation
                 }
             }
 
-            int a=2;
+            
 
         }
     }

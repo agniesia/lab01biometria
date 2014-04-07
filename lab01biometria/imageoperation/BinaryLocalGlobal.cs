@@ -36,44 +36,66 @@ namespace lab01biometria.imageoperation
 
         public void Visit(image_Gray Grey)
         {
-            byte zero = 0, one = 255;
-            var globalmean = Grey.utab.Sum(x => x) / Grey.utab.Length;
-            byte[][] Temp = new byte[Grey.w][];
             int range = (int)local / 2;
-            for (int x = range; x < Grey.w - range; x++)
+            byte[,] Temp = new byte[Grey.w, Grey.h];
+            Temp = Binarycanal(Grey.Greycanal, Grey.w, Grey.h);
+            for (int x = 0; x < Grey.w; x++)
             {
-                Temp[x] = new byte[Grey.h];
-                for (int y = range; y < Grey.h - range; y++)
+
+                for (int y = 0; y < Grey.h; y++)
                 {
-                    var Suma = 0;
-                    for (int i = 0; i < local; i++)
-                    {
-                        for (int j = 0; j < local; j++)
-                        {
-                            Suma += Grey.Greycanal[x + i - range][y + j - range];
-
-                        }
-
-                    }
-                    var localmean = Suma / Math.Pow(local, 2);
-
-                    if ((globalmean - sigma < localmean) && (localmean < globalmean + sigma))
-                    {
-                        Temp[x][y] = Grey.Greycanal[x][y] >= localmean ? one : zero;
-                    }
-                    else
-                        //mozna dodac +/- sigma ale konieczny dodatkowy warunek(mysle ze lepsze z sigma)
-                        Temp[x][y] = Grey.Greycanal[x][y] >= globalmean? one : zero;
+                    Grey.Greycanal[x][y] = Temp[x + range, y + range];
                 }
-            }
-            for (int x = range; x < Grey.w - range; x++)
-            {
-
-                for (int y = range; y < Grey.h - range; y++)
-                    Grey.Greycanal[x][y] = (byte)Temp[x][y];
             }
         }
         
+        private byte[,] Binarycanal(byte[][] canal ,int w,int h)
+            {
+                var globalmean = (canal.AsParallel().SelectMany(t=>t).ToArray().AsParallel().Sum(x => x) )/(w*h);
+
+                int range = (int)local / 2;
+                byte zero = 0, one = 255;
+                byte[,] Temp = new byte[w + 2 * range, h + 2 * range];
+
+                int[,] canalnew = new int[w + 2 * range, h + 2 * range];
+                for (int x = 0; x < w + 2 * range; x++)
+                {
+
+                    for (int y = 0; y < h + 2 * range; y++)
+                    {
+                        if ((y >= range && x >= range) && (y < h + range && x < w + range))
+                            canalnew[x, y] = canal[x - range][y - range];
+
+                    }
+                }
+                for (int x = range; x < w + range; x++)
+                {
+
+                    for (int y = range; y < h + range; y++)
+                    {
+                        var Suma = 0;
+                        for (int i = 0; i < local; i++)
+                        {
+                            for (int j = 0; j < local; j++)
+                            {
+                                Suma += canalnew[x + i - range, y + j - range];
+
+                            }
+
+                        }
+                        var localmean = Suma / Math.Pow(local, 2);
+
+                        if ((globalmean - sigma < localmean) && (localmean < globalmean + sigma))
+                        {
+                            Temp[x,y] = canalnew[x,y] >= localmean ? one : zero;
+                        }
+                        else{
+                        //mozna dodac +/- sigma ale konieczny dodatkowy warunek(mysle ze lepsze z sigma)
+                            Temp[x,y] = canalnew[x,y]>= globalmean? one : zero;}
+                    }
+                }
+                return Temp;
+            }
         
     }
 }

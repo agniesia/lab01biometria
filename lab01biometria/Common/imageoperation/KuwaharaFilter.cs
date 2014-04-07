@@ -6,16 +6,14 @@ using System.Threading.Tasks;
 
 namespace lab01biometria.imageoperation
 {
-    class KuwaharaFilter : Visitor
+    class KuwaharaFilter:Visitor
     {
         int Rozmiar;
-
-        public KuwaharaFilter(int Rozmiar = 7)
-        {
-            this.Rozmiar = Rozmiar;
+        
+        public KuwaharaFilter(int Rozmiar=5){
+            this.Rozmiar=Rozmiar;
         }
-        public void rob(image_as_tab image)
-        {
+        public void rob(image_as_tab image) {
 
             KuwaharaFilterAll(image);
         }
@@ -23,46 +21,12 @@ namespace lab01biometria.imageoperation
         {
             image.Accept(this);
         }
-        public void Visit(image_RGB rgb)
-        {
-            int[,] TempR = new int[rgb.w, rgb.h];
-            int[,] TempG = new int[rgb.w, rgb.h];
-            int[,] TempB = new int[rgb.w, rgb.h];
-            TempR = Kuwaharacanal(rgb.R, rgb.w, rgb.h);
-            TempG = Kuwaharacanal(rgb.G, rgb.w, rgb.h);
-            TempB = Kuwaharacanal(rgb.B, rgb.w, rgb.h);
-            var start = (int)Rozmiar / 2;
-            for (int c = start; c < rgb.w - start; c++)
-            {
-                for (int p = start; p < rgb.h - start; p++)
-                {
-                    rgb.R[c][p] = (byte)TempR[c, p];
-                    rgb.G[c][p] = (byte)TempG[c, p];
-                    rgb.B[c][p] = (byte)TempB[c, p];
-
-                }
-            }
-
-
+        public void Visit(image_RGB rgb) {
+          
         }
         public void Visit(image_Gray Grey)
         {
             int[,] TempGrey = new int[Grey.w, Grey.h];
-            TempGrey=Kuwaharacanal(Grey.Greycanal, Grey.w, Grey.h);
-            var start = (int)Rozmiar / 2;
-            for (int c = start; c < Grey.w-start; c++)
-            {
-                for (int p = start; p < Grey.h-start; p++)
-                {
-                    Grey.Greycanal[c][p] = (byte)TempGrey[c, p];
-
-                }
-            }
-
-
-        }
-        private int[,] Kuwaharacanal(byte [][] canal, int w, int h ){
-            int[,] TempGrey = new int[w, h];
             int Sr1;
             int Sr2;
             int Sr3;
@@ -75,9 +39,9 @@ namespace lab01biometria.imageoperation
 
 
             byte start = (byte)(Rozmiar/ 2);
-            for (int x = start; x < w - start; x++)
+            for (int x = start; x < Grey.w - start; x++)
             {
-                for (int y = start; y < h - start; y++)
+                for (int y = start; y < Grey.h - start; y++)
                 {
                     Sr1=0;
                     Sr2=0;
@@ -88,10 +52,10 @@ namespace lab01biometria.imageoperation
                     {
                         for (int j = 0; j < start; j++)
                         {
-                            maska1.Add( canal[x + i][y + j]);
-                            maska2.Add(canal[x -i][y +j]);
-                            maska3.Add( canal[x -i][y - j]);
-                            maska4.Add (canal[x + i][y - j]);
+                            maska1.Add( Grey.Greycanal[x + i][y + j]);
+                            maska2.Add(Grey.Greycanal[x -i][y +j]);
+                            maska3.Add( Grey.Greycanal[x -i][y - j]);
+                            maska4.Add (Grey.Greycanal[x + i][y - j]);
 
                             
                         }
@@ -115,26 +79,28 @@ namespace lab01biometria.imageoperation
                     variancja2=variancja2/minimask;
                     variancja3=variancja3/minimask;
                     variancja4=variancja4/minimask;
-                    maska1.Clear();
-                    maska2.Clear();
-                    maska3.Clear();
-                    maska4.Clear();
-                    List<double> variation=new List<double>{variancja1,variancja2,variancja3,variancja4};
+                    List<double> var=new List<double>{variancja1,variancja2,variancja3,variancja4};
                     List<double> Sr=new List<double>{Sr1,Sr2,Sr3,Sr4};
                     
-                    TempGrey[x,y]=(int)Sr[variation.IndexOf(variation.Min())];
-                    variation.Clear();
-                    Sr.Clear();
-
+                    TempGrey[x,y]=(int)Sr[var.IndexOf(var.Min())];
                 }
             }
-            return TempGrey;
+            
+            for (int c = 0; c < Grey.w; c++)
+            {
+                for (int p = 0; p < Grey.h; p++)
+                {
+                    Grey.Greycanal[c][p] = (byte)TempGrey[c, p];
+                    
+                }
+
+
+            }
+           
         }
-            
-            
+        
 
-
-       
-
-    }   
+        }
+        
+    
 }

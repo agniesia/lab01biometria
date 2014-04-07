@@ -35,12 +35,14 @@ namespace lab01biometria.imageoperation
             //return histobraz;
 
     {
-        image_RGB HistogramObject;
+        public image_RGB HistogramObject;
         public void HistogramAll(image_as_tab image)
         {
             image.Accept(this);
         }
-        public void rob(image_as_tab image) { }
+        public void rob(image_as_tab image) {
+            HistogramAll(image);
+        }
         public void Visit(image_RGB rgb)
         {
             int[] Hist = new int[256];
@@ -81,8 +83,8 @@ namespace lab01biometria.imageoperation
                 {
 
                     temp[4 * (j * 256 + i)] = histobraz[i][j];
-                    temp[4 * (j * 256 + i) + 1] = histobraz[i][j];
-                    temp[4 * (j * 256 + i) + 2] = histobraz[i][j];
+                    temp[4 * (j * 256 + i) + 1] = 50;
+                    temp[4 * (j * 256 + i) + 2] = 20;
                     temp[4 * (j * 256 + i) + 3] = 255;
 
 
@@ -126,8 +128,8 @@ namespace lab01biometria.imageoperation
                 {
 
                     temp[4 * (j * 256 + i)] = histobraz[i][j];
-                    temp[4 * (j * 256 + i) + 1] = histobraz[i][j];
-                    temp[4 * (j * 256 + i) + 2] = histobraz[i][j];
+                    temp[4 * (j * 256 + i) + 1] = 50;
+                    temp[4 * (j * 256 + i) + 2] =20;
                     temp[4 * (j * 256 + i) + 3] = 255;
 
 

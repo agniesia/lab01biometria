@@ -1,5 +1,5 @@
 ﻿using lab01biometria;
-using MathNet.Numerics;
+
 using System;
 using System.Collections.Generic;
 using System.Linq;

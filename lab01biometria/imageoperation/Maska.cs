@@ -122,9 +122,9 @@ namespace lab01biometria
                 }
             }
             
-            for (int c = 0; c < Grey.w; c++)
+            for (int c = start; c < Grey.w-start; c++)
             {
-                for (int p = 0; p < Grey.h; p++)
+                for (int p = start; p < Grey.h-start; p++)
                 {
                     
                     Grey.Greycanal[c][p] = (byte)TempGrey[c, p];

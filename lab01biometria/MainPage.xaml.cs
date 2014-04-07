@@ -35,6 +35,7 @@ namespace lab01biometria
         {
             this.InitializeComponent();
             przyciskiEnabled();
+            info.Text = "load image to work";
 
         }
 
@@ -55,6 +56,8 @@ namespace lab01biometria
             binaryzation.IsEnabled = false;
             Aply.IsEnabled = false;
             OK.IsEnabled = false;
+            histogram.IsEnabled = false;
+            
 
 
 
@@ -67,6 +70,7 @@ namespace lab01biometria
             noise.IsEnabled = true;
             resize.IsEnabled = true;
             filters.IsEnabled = true;
+            histogram.IsEnabled = true;
         }
 
         IRandomAccessStream fileStream; // Wczytanie pliku do strumienia
@@ -80,6 +84,7 @@ namespace lab01biometria
         imageoperation.RGBtoNaturalGrey y;
         image_as_tab imagetowork;
         List<int> Lista = new List<int>();
+        string opis = "";
 
         private async void wczytajimage(object sender, RoutedEventArgs e)
         {
@@ -178,7 +183,7 @@ namespace lab01biometria
             
         }
 
-        private void _try_Click(object sender, RoutedEventArgs e)
+        private async void _try_Click(object sender, RoutedEventArgs e)
         {
 
             Originator org = new Originator();
@@ -191,17 +196,29 @@ namespace lab01biometria
             {
                 if (operatio.GetType() == grey.GetType())
                 {
-                    grey.rob(imagetowork);
+                    await ThreadPool.RunAsync(new WorkItemHandler((IAsyncAction action) =>
+                    {
+                        grey.rob(imagetowork);
+                    }));
+                    
                     imagetowork = grey.GreyElement.copy();
                 }
 
                 else if (operatio.GetType() == greyn.GetType())
                 {
-                    greyn.rob(imagetowork);
+                    await ThreadPool.RunAsync(new WorkItemHandler((IAsyncAction action) =>{
+                    greyn.rob(imagetowork);}));
+                    
                     imagetowork = greyn.GreyElement.copy();
                 }
                 else
-                    operatio.rob(imagetowork);
+                {
+                    await ThreadPool.RunAsync(new WorkItemHandler((IAsyncAction action) =>{
+                    operatio.rob(imagetowork);}));
+                    
+                    
+                }
+                info.Text = opis;
                 bitmpe(imagetowork);
                 org.RestoreMemento(caretaker.Memento);
                 imagetowork = org.State;
@@ -215,7 +232,7 @@ namespace lab01biometria
         
         imageoperation.RGBtoGrey grey = new imageoperation.RGBtoGrey();
         imageoperation.RGBtoNaturalGrey greyn = new imageoperation.RGBtoNaturalGrey();
-        private void OK_Click(object sender, RoutedEventArgs e)
+        private async void OK_Click(object sender, RoutedEventArgs e)
         {
 
 
@@ -224,19 +241,33 @@ namespace lab01biometria
             {
                 if (operatio.GetType() == grey.GetType())
                 {
-                    grey.rob(imagetowork);
+                    await ThreadPool.RunAsync(new WorkItemHandler((IAsyncAction action) =>
+                    {
+                        grey.rob(imagetowork);
+                    }));
+                    
                     imagetowork = grey.GreyElement.copy();
                     binaryzation.IsEnabled = true;
                 }
 
                 else if (operatio.GetType() == greyn.GetType())
                 {
-                    greyn.rob(imagetowork);
+                    await ThreadPool.RunAsync(new WorkItemHandler((IAsyncAction action) =>
+                    {
+                        greyn.rob(imagetowork);
+                    }));
+                    
                     imagetowork = greyn.GreyElement.copy();
                     binaryzation.IsEnabled = true;
                 }
                 else
-                    operatio.rob(imagetowork);
+                {
+                    await ThreadPool.RunAsync(new WorkItemHandler((IAsyncAction action) =>
+                    {
+                        operatio.rob(imagetowork);
+                    }));
+                }
+                info.Text = opis;
                 bitmpe(imagetowork);
                 Show.Source = change.Source;
                 operatio = null;
@@ -262,21 +293,25 @@ namespace lab01biometria
             {
                 case 0:
                     operatio = new imageoperation.NormalizeImage();
+                    opis = "Histogram Eqaliztaion increases the global contrast of many images. Histogram of the color is distributed for all intensities";
                     break;
                 case 1:
                      
                     operatio = new imageoperation.RGBtoGrey();
-                   
+                    opis = "Change corofull image to grayscale with avrage algorithm";
                     break;
                 case 2:
                     operatio= new imageoperation.RGBtoNaturalGrey();
+                    opis="Change corolfull image to grayscale with natural luminaces algorithm";
                     break;
                 case 3:
                     operatio = new imageoperation.Negative();
+                    opis="Change image to negative image";
                     break;
                 case 4:
                     int waga = (int)wagasepia.Value;
                     operatio = new imageoperation.Sepia(waga);
+                    opis = "Change corolfull image to sepia colors. Sepia factor  20 ";
                     break;
             }
 
@@ -289,16 +324,21 @@ namespace lab01biometria
         {
             int a = noiselista.SelectedIndex;
             int chance =(int) power.Value;
+            byte xa = (byte)Intensity.Value;
+            byte ya = (byte)(xa / 2);
             switch (a)
             {
                 case 0:
                     operatio = new imageoperation.NoiseGeneratorSaltPeper(chance);
+                    opis = "Generate artificial noise type of Salt and paper with power correspond to probability ";
                     break;
                 case 1:
-                    operatio = new imageoperation.NoiseGeneratorUniformOneCalanl(chance,10 ,30);
+                    operatio = new imageoperation.NoiseGeneratorUniformOneCalanl(chance,ya ,xa);
+                    opis = "Generate artificial noise type of Unitary noise with power correspond to probability and range correspond to change of pixel value. The noise id the same for every canal in RGB images. ";
                     break;
                 case 2:
-                    operatio = new imageoperation.NoiseGeneratorUniformDiffCanal(chance, 10, 30);
+                    operatio = new imageoperation.NoiseGeneratorUniformDiffCanal(chance,ya ,xa);
+                    opis = "Generate artificial noise type of Unitary noise with power correspond to probability and range correspond to change of pixel value. Noise is different for every canal in RGB images. Noise only for RGB images. ";
                     break;
             }
 
@@ -312,9 +352,11 @@ namespace lab01biometria
             switch(a){
                 case 0:
                     operatio = new imageoperation.Roberts();
+                    opis = "Roberts cross is  differential operator, its  approximate the gradient of an image for edage detection. Sensitivity to noise";
                     break;
                 case 1:
                     operatio = new imageoperation.Sobel();
+                    opis=" Sobel is differential operator, its  approximate the gradient of an image for edage detection.Less sensitive to isolated high intensity";
                     break;
 
             }
@@ -326,20 +368,25 @@ namespace lab01biometria
         {
             var a = filterslist.SelectedIndex;
             var Sigma = sigma.Value;
-            var Rozm = (int)rozmiarfilter.Value;
+            var Rozm = (int)rozmiarfilter.Value+1;
+            
             switch (a)
             {
                 case 0:
                     operatio = new imageoperation.MedianFilter(Rozm);
+                    opis = " The median filter  often used to remove noise.";
                     break;
                 case 1:
                     operatio = new imageoperation.MedianFilterBetter(Rozm);
+                    opis = " The median filter  often used to remove noise, with extra pixel value control.";
                     break;
                 case 2:
                     operatio = new imageoperation.KuwaharaFilter(Rozm);
+                    opis=" Kuwahara filter is able to apply smoothing on the image while preserving the edges.";
                     break;
                 case 3:
                     operatio = new imageoperation.GaussFilter(Rozm, Sigma);
+                    opis = "Gaussian filter is able to apply smoothing with Gaussian probablity. ";
                     break;
             }
 
@@ -352,26 +399,33 @@ namespace lab01biometria
         private void oksharpen_Click(object sender, RoutedEventArgs e)
         {
             var a = Listasharpensmooth.SelectedIndex;
-            int rozmiar = (int)rozmmaski.Value;
+            int rozmiar = (int)rozmmaski.Value+1;
+            
             switch (a)
             {
                 case 0:
                     operatio = new MeanFiltersharpen5();
+                    opis = "Sharpen I filter is able to apply sharpen images with small power ";
                     break;
                 case 1:
                     operatio = new MeanFilterSharpen9();
+                    opis = "Sharpen I filter is able to apply sharpen images with medium power ";
                     break;
                 case 2:
                     operatio = new MeanFilteSharpen5and2();
+                    opis = "Sharpen I filter is able to apply sharpen images with big power. ";
                     break;
                 case 3:
                     operatio = new MeanFilterSmooth2();
+                    opis = "Smooth I filter is able to apply smoothing images with small power ";
                     break;
                 case 4:
                     operatio = new MeanFilterSmooth4();
+                    opis = "Smooth I filter is able to apply smoothing images with big power ";
                     break;
                 case 5:
                     operatio = new MeanFilterSmooth1(rozmiar);
+                    opis = "Smooth I filter is able to apply smoothing images with the biggest power. The size corresponde to power of smoothing. ";
                     break;
 
             }
@@ -383,29 +437,36 @@ namespace lab01biometria
         private void okbinary_Click(object sender, RoutedEventArgs e)
         {
             var a = binarylist.SelectedIndex;
-            var roz = (int)powerslider.Value;
+            var roz = (int)powerslider.Value+1;
             var odchylenie = (int)Softsider.Value;
             switch (a)
             {
                 case 0:
                     operatio = new imageoperation.ThresholdingGlobal();
+                    opis = "Global binarization is thresolding with global mean.It is good for one element image";
                     break;
                 case 1:
                     operatio=new imageoperation.BinaryLocalMean(roz);
+                    opis = "Local binarization is thresolding with local mean.It is good for few big elements image";
+
                     break;
                 case 2:
                     operatio = new imageoperation.BinaryLocalGlobal(roz, odchylenie);
+                    opis = "Mix binarization is thresolding with global mean.It is good for few elements image with global control.";
                     break;
                 case 3:
                     operatio = new imageoperation.Bernsen(roz,odchylenie);
+                    opis = "Bersen binarization is thresolding with local intensity mean.It is good for few elements image with better control for object range.";
                     break;
                 case 4:
                     operatio = new imageoperation.Otsu();
+                    opis = "Otsu binarization is thresolding with histogram  level";
                     break;
             }
 
             binaryflyout.Hide();
             binarylist.SelectedIndex = -1;
+            Binoperation.IsEnabled = true;
         }
 
         private void okzoom_Click(object sender, RoutedEventArgs e)
@@ -417,20 +478,25 @@ namespace lab01biometria
             {
                 case 0:
                     operatio = new imageoperation.Skalowanie(Zoom);
+                    opis = " Fast and inaccurate zooming";
                     break;
                 case 1:
-                    operatio = new imageoperation.Scalebilinear(Zoom);
+                    operatio =  new imageoperation.Skalowanie(Zoom);
+                    opis = "Zooming with colors interpolation";
                     break;
                 case 2:
                     Zoom = 1 / Zoom;
                     operatio = new imageoperation.Skalowanie(Zoom);
+                    opis = " Fast and inaccurate unzooming";
                     break;
                 case 3:
                     Zoom =1/Zoom;
                     operatio = new imageoperation.ScaleMean(Zoom);
+                    opis = " Fast and inaccurate zooming with smoothig";
                     break;
                 case 4:
                     operatio = new imageoperation.Roate(kat);
+                    opis = " Rotate of image with angle beetwen 0-90 deegres";
                     
                     break;
 
@@ -446,15 +512,23 @@ namespace lab01biometria
             {
                 case 0:
                     operatio=new  Binaryoperation.Skeleton();
+                    opis = " One pixel thinning";
                     break;
                 case 1:
                     operatio = new Binaryoperation.Segmentation();
+                    opis = "Sgementation finde object at image";
                     break;
 
             }
             binoperatinflyout.Hide();
             binoperationlist.SelectedIndex = -1;
 
+        }
+
+        private void histogram_Click(object sender, RoutedEventArgs e)
+        {   imageoperation.Histogram operacja = new imageoperation.Histogram();
+            operacja.rob(imagetowork);
+            bitmpe(operacja.HistogramObject);
         }
 
         

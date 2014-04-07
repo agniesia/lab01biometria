@@ -70,35 +70,35 @@ namespace lab01biometria.imageoperation
                     Newkanal[tx][ty] = kanal[x][y];
                 }
             }
-            //for (int x = 0; x < w-1; x++)
-            //{
-            //    for (int y = 0; y < h - 1; y++)
-            //    {
-            //        tx = (int)(x * scale);
-            //        ty =(int)( y * scale);
+            for (int x = 0; x < w - 1; x++)
+            {
+                for (int y = 0; y < h - 1; y++)
+                {
+                    tx = (int)(x * scale);
+                    ty = (int)(y * scale);
 
 
-            //        var q00 = Newkanal[tx][ty +(int) scale];
-            //        var q01 = Newkanal[tx + (int)scale][ty + (int)scale];
-            //        var q11 = Newkanal[tx + (int)scale][ty];
+                    var q00 = Newkanal[tx][ty +(int) scale];
+                    var q10 = Newkanal[tx + (int)scale][ty + (int)scale];
+                    var q11 = Newkanal[tx + (int)scale][ty];
 
-            //        for (int i = tx + 1; i < tx + scale; i++)
-            //        {
-            //            for (int j = ty + 1; j < ty + scale; j++)
-            //            {
+                    for (int i = tx +(int) scale; i >tx; i--)
+                    {
+                        for (int j = ty +(int) scale; j >ty; j--)
+                        {
 
-            //                var temp = q00 * (1 - i) * (j - y) + q01 * i * (1 - y) + Newkanal[tx][ty] + q11 * i * j;
-            //                if (temp > 255)
-            //                    temp = 255;
-            //                else if (temp < 0)
-            //                    temp = 0;
-            //                Newkanal[i][j] = (byte)temp;
+                            var temp = q00 * (1 - (i-tx)) * (1 - (j-ty)) + q10 * (i-tx) * (1 - (j-ty)) + Newkanal[tx][ty]*(1-(i-tx))*(j-ty) + q11 * (i-tx) * (j-ty);
+                            if (temp > 255)
+                                temp = 255;
+                            else if (temp < 0)
+                                temp = 0;
+                            Newkanal[i][j] = (byte)temp;
 
 
-            //            }
-            //        }
-            //    }
-            //}
+                        }
+                    }
+                }
+            }
                     
 
             return Newkanal;

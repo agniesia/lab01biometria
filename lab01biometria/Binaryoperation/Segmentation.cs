@@ -23,11 +23,12 @@ namespace lab01biometria.Binaryoperation
             Binary binary = new Binary(Grey.Greycanal, Grey.w, Grey.h);
             
             segment(binary);
+            byte white = 255;
             for (int y = 0; y < binary.h; y++)
             {
                 for (int x = 0; x < binary.w; x++)
                 {
-                    Grey.Greycanal[x][y] = (byte)binary.BinaryCanal[x][y];
+                    Grey.Greycanal[x][y] = binary.BinaryCanal[x][y] == 0 ? white: (byte)binary.BinaryCanal[x][y];
                 }
             }
         }
@@ -36,33 +37,42 @@ namespace lab01biometria.Binaryoperation
         {
             List<Tuple<int, int>> bufor = new List<Tuple<int, int>>();
             List<Tuple<int, int, int, int>> wspolrzedne = new List<Tuple<int, int, int, int>>();
+            
+            int[,] canalnew = new int[binary.w + 6, binary.h + 6];
             for (int y = 0; y < binary.h; y++)
             {
                 for (int x = 0; x < binary.w; x++)
                 {
-                    binary.BinaryCanal[x][y]=binary.BinaryCanal[x][y] < 1 ? 1 : binary.BinaryCanal[x][y];
+                    if ((y >= 3 && x >= 3) && (y < binary.h + 3 && x < binary.w + 3))
+                        canalnew[x, y] = binary.BinaryCanal[x-3][y-3] < 1 ? 1 : 0;
+                    
                 }
             }
+            
+           
+
+            
+            
             int wsp_minx = binary.w;
             int wsp_miny = binary.h;
             int wsp_maxx = 0;
             int wsp_maxy = 0;
             byte kolor = 100;
-            for (int y = 3; y < binary.h-3; y++)
+            for (int y = 3; y < binary.h; y++)
             {
-                for (int x = 3; x < binary.w-3; x++)
+                for (int x = 3; x < binary.w; x++)
                 {
-                    if (binary.BinaryCanal[x][y] == 1)
+                    if (canalnew[x,y] == 1)
                     {
                         bufor.Add(new Tuple<int, int>(x, y));
-                        binary.BinaryCanal[x][y] = kolor;
+                        canalnew[x, y] = kolor;
                         while (bufor.Count != 0)
                         {
 
 
                             foreach (Tuple<int, int> element in bufor.ToList())
                             {
-                                binary.BinaryCanal[element.Item1][element.Item2] = kolor;
+                                canalnew[element.Item1,element.Item2] = kolor;
                                 wsp_minx = element.Item1 < wsp_minx ? element.Item1 : wsp_minx;
                                 wsp_maxx = element.Item1 > wsp_maxx ? element.Item1 : wsp_maxx;
 
@@ -77,9 +87,9 @@ namespace lab01biometria.Binaryoperation
 
                                         p = element.Item1 + i - 1;
                                         d = element.Item2 + j - 1;
-                                        if (binary.BinaryCanal[p][d] != 1)
+                                        if (canalnew[p,d] != 1)
                                             continue;
-                                        binary.BinaryCanal[p][d] = kolor;
+                                        canalnew[p,d] = kolor;
                                         bufor.Add(new Tuple<int, int>(p, d));
                                     }
                                 }
@@ -96,10 +106,19 @@ namespace lab01biometria.Binaryoperation
                                 wsp_miny = binary.h;
                                 wsp_maxx = 0;
                                 wsp_maxy = 0;
-                                kolor++;
+                                var tem=kolor+20;
+                                kolor = (byte)tem;
                             }
                         }
                     }
+                }
+            }
+            for (int x = 0; x < binary.w; x++)
+            {
+
+                for (int y = 0; y <binary.h; y++)
+                {
+                    binary.BinaryCanal[x][y] = canalnew[x +3, y + 3];
                 }
             }
         }
